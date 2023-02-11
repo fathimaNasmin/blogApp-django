@@ -1,0 +1,65 @@
+
+a{
+    text-decoration:none;
+    color: black;
+}
+
+#first-post img{
+    width:100%;
+    height:auto;
+}
+
+#overlay-text{
+    text-align:center;
+}
+.card{
+    width:18rem;
+}
+.pagination{
+    width:50%;
+    margin:auto;
+}
+.pagination .page-link{
+    color:black;
+    background-color: white;
+}
+.pagination .page-link:hover {
+  background-color: black;
+  color: white;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: black;
+  color:white;
+}
+
+@media(min-width:1024px){
+
+    #first-post{
+        width:100%;
+        height:auto;
+        position:relative;
+
+    }
+    .text-overlay {
+      position: absolute;
+      bottom: 25px;
+      left: 35px;
+      color: white;
+      font-size: 20px;
+    }
+    .text-overlay p{
+        color:white;
+    }
+    #second-row{
+        margin:5% 0;
+    }
+    .card{
+        width:20rem;
+    }
+
+
+
+
+
+}

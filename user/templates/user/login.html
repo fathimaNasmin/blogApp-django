@@ -1,0 +1,41 @@
+{% extends 'post/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block style %}
+  <link rel="stylesheet" href="{% static 'user/login.css' %}">
+{% endblock %}
+
+
+{% block main %}
+<div class="d-flex flex-lg-row flex-sm-column w-100">
+    <div class="px-5 w-lg-50 w-sm-100 flex-grow-1">
+        <h3 class="text-center">Welcome back, Login here</h3>
+        <p class="text-center">Please enter your details</p>
+        <br>
+        <div class="row">
+            <div class="col-md-12 d-flex justify-content-center">
+              <a class="btn btn-google btn-block btn-outline-secondary text-center" href="#">
+                <img src="https://img.icons8.com/color/16/000000/google-logo.png">&nbsp;Login With Google</a>
+
+            </div>
+        </div>
+        <div class="or-container">
+          <div class="line-separator"></div>
+          <div class="or-label">or</div>
+          <div class="line-separator"></div>
+        </div>
+        <br>
+        <form action="{% url 'user:login' %}" method="post" autocomplete="off">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-dark w-100 mt-4 mb-4">Log In</button>
+            <p class="text-center">Don't have an Account?&nbsp;<a class="text-decoration-none" href="{% url 'user:signup' %}"><bold>Sign up for free</bold></a></p>
+        </form>
+      </div>
+
+    <div class="w-50 d-none d-lg-block right-image" style="background-image: url('{% static "user/images/login-wallpaper.jpg" %}');"></div>
+
+</div>
+
+{% endblock %}

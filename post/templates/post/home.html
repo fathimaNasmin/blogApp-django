@@ -1,0 +1,91 @@
+{% extends 'post/base.html' %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'post/home.css' %}">
+{% endblock %}
+
+{% block main %}
+    <div>
+      <center>
+          <h2>Writing from our team</h2><br>
+          <p>The Latest industry news,interviews, technologies and resources</p>
+      </center>
+    </div>
+    <div>
+        <a href="">
+          <div id="first-post">
+              <img class="first" src="{% static 'post/images/first-post.jpg' %}" alt="">
+              <div class="text-overlay">
+                  <p>Olive ryan&nbsp;&#x2022;&nbsp;20 Jan 2022</p>
+                  <h2>UX review presentation</h2>
+                  <p>How do you create complelling presentation</p>
+              </div>
+          </div>
+        </a>
+
+        <div id="second-row">
+            <div class="row gy-4">
+                <div class="col-xl-4 col-md-6">
+                    <a href="">
+                        <div class="card mx-auto border-0">
+                          <img src="{% static 'post/images/card-image.jpg' %}" class="card-img-top" alt="...">
+                          <div class="card-body">
+                            <p>Amayrah Meher&nbsp;&#x2022;&nbsp;20 Jan 2022</p>
+                            <h4 class="card-text">Title of the content</h4>
+                            <p class="card-text">Sub-title of the content</p>
+                          </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-4 col-md-6">
+                    <a href="">
+                        <div class="card mx-auto border-0">
+                          <img src="{% static 'post/images/card-image.jpg' %}" class="card-img-top" alt="...">
+                          <div class="card-body">
+                            <p>Amayrah Meher&nbsp;&#x2022;&nbsp;20 Jan 2022</p>
+                            <h4 class="card-text">Title of the content</h4>
+                            <p class="card-text">Sub-title of the content</p>
+                          </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xl-4 col-md-6">
+                    <a href="">
+                        <div class="card mx-auto border-0">
+                          <img src="{% static 'post/images/card-image.jpg' %}" class="card-img-top" alt="...">
+                          <div class="card-body">
+                            <p>Amayrah Meher&nbsp;&#x2022;&nbsp;20 Jan 2022</p>
+                            <h4 class="card-text">Title of the content</h4>
+                            <p class="card-text">Sub-title of the content</p>
+                          </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--    Pagination  -->
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+{% endblock %}
+
+<!--footer file-->
+    {% block footer %}
+        {% include 'post/footer.html' %}
+    {% endblock %}

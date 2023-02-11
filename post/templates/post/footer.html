@@ -1,0 +1,38 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'post/footer.css' %}">
+<footer>
+    <div id="footer-div">
+        <div class="row">
+            <div class="col-lg-8 left-content">
+                <a class="navbar-brand" id="blog-app" href="#">
+                <img src="{% static 'post/images/writing.png' %}" alt="" width="40" height="35" class="d-inline-block align-text-center">
+                    BlogApp
+                </a>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <ul>
+                  <li>Overview</li>
+                  <li>Features</li>
+                  <li>Help</li>
+                  <li>Careers</li>
+                </ul>
+                <br><br><br>
+                <p>&copy; 2023 Your Company Name</p>
+            </div>
+            <div class="col-lg-4 d-flex flex-column align-items-lg-end align-items-sm-center">
+                    <a href="#">
+                      <div class="play-store-button">
+                        <i class="fab fa-google-play"></i>
+                        <p>Download on<br>Google Play</p>
+                      </div>
+                    </a><br><br>
+                     <a href="#">
+                          <div class="play-store-button">
+                            <i class="fa-brands fa-apple"></i>
+                            <p>Download on<br>App Store</p>
+                          </div>
+                    </a>
+            </div>
+        </div>
+    </div>
+</footer>
