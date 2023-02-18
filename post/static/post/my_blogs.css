@@ -1,0 +1,12 @@
+div, h4, p{
+    color:black;
+}
+.border{
+    color:#575555;
+    border-radius: 5px;
+}
+a{
+    text-decoration:none;
+}
+small{
+}

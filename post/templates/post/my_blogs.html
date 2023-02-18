@@ -1,0 +1,38 @@
+{% extends 'post/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block style %}
+  <link rel="stylesheet" href="{% static 'post/my_blogs.css' %}">
+{% endblock %}
+
+
+
+{% block main %}
+<div class="d-flex flex-column w-75 mx-auto">
+    <h2 class="mx-auto mb-5">My Blogs</h2>
+    {% for blog in my_blogs %}
+    <a href="{% url 'post:post-detail-view' blog.id %}">
+       <div class="d-flex flex-row border">
+            <div class="m-2 position-relative" style="width:180px; height:180px;">
+                <img class="text-center" src="{{ blog.image_post.url }}" alt="" style="object-fit: cover; width:100%; height:100%;">
+            </div>
+            <div class="d-flex flex-column m-2 position-relative">
+                <h4>{{ blog.title }}</h4>
+                <p>{{ blog.sub_title }}</p>
+                <small class="position-absolute bottom-0 w-100">Posted on:{{ blog.date_posted|date:"D d M Y" }}</small>
+            </div>
+
+        </div>
+    </a>
+
+    <br>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+<!--footer file-->
+    {% block footer %}
+        {% include 'post/footer.html' %}
+    {% endblock %}

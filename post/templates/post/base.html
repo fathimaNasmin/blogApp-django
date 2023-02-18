@@ -37,7 +37,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" id="home" aria-current="page" href="#">Home</a>
+              <a class="nav-link active" id="home" aria-current="page" href="{% url 'post:home' %}">Home</a>
             </li>
           </ul>
             {% if user.is_authenticated %}
@@ -52,8 +52,8 @@
                           </a>
 
                           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Create Blog</a></li>
-                            <li><a class="dropdown-item" href="#">My Blogs</a></li>
+                            <li><a class="dropdown-item" href="{% url 'post:create-new-post' user.id %}">Create Blog</a></li>
+                            <li><a class="dropdown-item" href="{% url 'post:my-blogs' user.id %}">My Blogs</a></li>
                               <li><a class="dropdown-item" href="#">Settings</a></li>
                             <li><a class="dropdown-item" href="{% url 'user:logout' %}">Logout</a></li>
                           </ul>
@@ -90,8 +90,12 @@
 
       </div>
     </main>
-
+    {% block newsletter %}{% endblock %}
     {% block footer %}{% endblock %}
+
+    <script>
+        {% block script %} {% endblock %}
+    </script>
 
     <!-- Optional JavaScript; choose one of the two! -->
 
