@@ -1,0 +1,23 @@
+.bg-image{
+  background-size: cover;
+}
+.modal-body p{
+    color:#5c5b5b;
+}
+a{
+color:black;
+}
+
+
+@media (min-width: 1024px){
+    .modal-body p {
+        color: #5c5b5b;
+    }
+
+
+    .right-image{
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+    }
+}
+

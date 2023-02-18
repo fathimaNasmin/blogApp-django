@@ -12,57 +12,45 @@
       </center>
     </div>
     <div>
-        <a href="">
-          <div id="first-post">
-              <img class="first" src="{% static 'post/images/first-post.jpg' %}" alt="">
-              <div class="text-overlay">
-                  <p>Olive ryan&nbsp;&#x2022;&nbsp;20 Jan 2022</p>
-                  <h2>UX review presentation</h2>
-                  <p>How do you create complelling presentation</p>
-              </div>
-          </div>
-        </a>
+        {% if first_post is None %}
+        <h3>No posts</h3>
+        {% else %}
+
+            {% for post in first_post %}
+                <a href="{% url 'post:post-detail-view' post.id %}">
+                  <div id="first-post">
+                      <img class="first" src="{{ post.image_post.url }}" alt="">
+                      <div class="text-overlay">
+                          <p>{{ post.user.username }}&nbsp;&#x2022;&nbsp;{{ post.date_posted|date:"D d M Y" }}</p>
+                          <h2>{{ post.title }}</h2>
+                          <p>{{ post.sub_title }}</p>
+                      </div>
+                  </div>
+                </a>
+            {% endfor%}
+        {% endif %}
+
 
         <div id="second-row">
             <div class="row gy-4">
+                {% for post in rest_of_posts %}
                 <div class="col-xl-4 col-md-6">
-                    <a href="">
+                    <a href="{% url 'post:post-detail-view' post.id %}">
                         <div class="card mx-auto border-0">
-                          <img src="{% static 'post/images/card-image.jpg' %}" class="card-img-top" alt="...">
+                          <img src="{{ post.image_post.url }}" class="card-img-top" alt="..." style="object-fit:cover;width:100%;height:30vh;">
                           <div class="card-body">
-                            <p>Amayrah Meher&nbsp;&#x2022;&nbsp;20 Jan 2022</p>
-                            <h4 class="card-text">Title of the content</h4>
-                            <p class="card-text">Sub-title of the content</p>
+                            <p>{{ post.user.username }}&nbsp;&#x2022;&nbsp;{{ post.date_posted|date:"D d M Y" }}</p>
+                            <h4 class="card-text">{{ post.title }}</h4>
+                            <p class="card-text">{{ post.sub_title }}</p>
                           </div>
                         </div>
                     </a>
                 </div>
-                <div class="col-xl-4 col-md-6">
-                    <a href="">
-                        <div class="card mx-auto border-0">
-                          <img src="{% static 'post/images/card-image.jpg' %}" class="card-img-top" alt="...">
-                          <div class="card-body">
-                            <p>Amayrah Meher&nbsp;&#x2022;&nbsp;20 Jan 2022</p>
-                            <h4 class="card-text">Title of the content</h4>
-                            <p class="card-text">Sub-title of the content</p>
-                          </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-xl-4 col-md-6">
-                    <a href="">
-                        <div class="card mx-auto border-0">
-                          <img src="{% static 'post/images/card-image.jpg' %}" class="card-img-top" alt="...">
-                          <div class="card-body">
-                            <p>Amayrah Meher&nbsp;&#x2022;&nbsp;20 Jan 2022</p>
-                            <h4 class="card-text">Title of the content</h4>
-                            <p class="card-text">Sub-title of the content</p>
-                          </div>
-                        </div>
-                    </a>
-                </div>
+                {% endfor%}
+
             </div>
         </div>
+
     </div>
 
     <!--    Pagination  -->

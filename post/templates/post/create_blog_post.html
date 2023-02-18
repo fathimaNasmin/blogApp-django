@@ -1,0 +1,33 @@
+{% extends 'post/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block style %}
+  <link rel="stylesheet" href="{% static 'post/create_blog_post.css' %}">
+{% endblock %}
+
+
+
+{% block main %}
+
+<div class="d-flex flex-lg-row flex-sm-column w-100">
+    <div class="px-5 w-lg-50 w-sm-100 flex-grow-1">
+        <h3 class="text-center">Create New Blog Post</h3>
+        <p class="text-center">Fill the form to create new post</p>
+        <br>
+        <br>
+        <form action="{% url 'post:create-new-post' user.id %}" method="post" autocomplete="off" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="d-flex flex-lg-row">
+                <a class="w-50 mx-2" href=""><button class="btn btn-light border border-dark flex-fill w-100">Cancel</button></a>
+            <button type="submit" class="btn btn-dark flex-fill w-50 mx-4">Publish</button>
+            </div>
+
+        </form>
+      </div>
+        <div class="w-50 d-none d-lg-block bg-image" style="background-image: url('{% static "post/images/create_post.jpg" %}');"></div>
+
+</div>
+
+{% endblock %}

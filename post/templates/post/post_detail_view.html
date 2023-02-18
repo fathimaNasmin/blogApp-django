@@ -1,0 +1,85 @@
+{% extends 'post/base.html' %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'post/post_detail_view.css' %}">
+{% endblock %}
+
+{% block main %}
+<div class="">
+    <h1 class="text-center mx-4 mb-4">{{ post.title }}</h1>
+    <p class="text-center mx-2 sub-title">{{ post.sub_title }}</p>
+    <div class="text-center mt-3 d-flex flex-row justify-content-center align-items-center">
+        <div class="mx-2 align-items-center">
+            <img src="{{ post.user.profile.profile_image.url }}" style="height: 55px; width: 55px; border-radius: 50%;">
+        </div>
+        <div class=" d-flex flex-column justify-content-center mx-2">
+           <h6 class="text-start">{{ post.user.username }}</h6>
+            <p class="sub-title text-start">{{ post.date_posted|date:"D d M Y" }}</p>
+        </div>
+    </div>
+
+    {% if request.user.is_authenticated %}
+        {% if request.user == post.user %}
+            <div class="d-flex justify-content-center my-3">
+                <a class="text-center mx-4 text-decoration-none text-secondary" href="{% url 'post:edit-post' post_id=post.id %}">Edit</a>
+                <a class="text-center text-decoration-none text-secondary" href="{% url 'post:delete-post' post_id=post.id %}" onclick="confirmDelete()">Delete</a>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <div id="img-container" class="mt-2">
+        <img class="text-center" src="{{ post.image_post.url }}" alt="" style="object-fit: contain;width:100%;height:auto;">
+    </div>
+    <div class="post-content">
+        {{ post.description|linebreaksbr }}
+    </div>
+    <hr>
+    <div class="d-flex flex-row justify-content-end mb-4 mx-5 px-2">
+            <button class="btn btn-light border rounded mx-1">
+                <a href="#">
+                <i class="fa-brands fa-twitter fa-xl icon"></i>
+              </a>
+            </button>
+            <button class="btn border rounded mx-1">
+                <a href="#">
+                <i class="fa-brands fa-facebook fa-xl icon"></i>
+              </a>
+            </button>
+            <button class="btn btn-light border rounded mx-1">
+                <a href="#">
+                <i class="fa-brands fa-linkedin fa-xl icon"></i>
+              </a>
+            </button>
+
+    </div>
+</div>
+
+
+{% endblock %}
+
+<!--newsletter block-->
+    {% block newsletter %}
+        {% include 'post/newsletter.html' %}
+    {% endblock %}
+
+<!--footer file-->
+    {% block footer %}
+        {% include 'post/footer.html' %}
+    {% endblock %}
+
+<form id="delete-form" method="post" action="{% url 'delete_post' post.id %}">
+    {% csrf_token %}
+    <!-- Add any additional form fields here, if needed -->
+    <button type="button" onclick="confirmDelete()">Delete</button>
+</form>
+
+<!--js script-->
+{% block script %}
+function confirmDelete() {
+        var result = confirm("Are you sure you want to delete this post?");
+        if (result) {
+            // If the user clicks "OK", submit the form
+            document.getElementById("delete-form").submit();
+        }
+    }
+{% endblock %}

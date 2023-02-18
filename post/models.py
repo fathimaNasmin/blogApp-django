@@ -7,9 +7,10 @@ from django.utils import timezone
 # Create your models here.
 class Post(models.Model):
     title = models.CharField(max_length=250)
+    sub_title = models.CharField(max_length=300)
     description = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
-    image_post = models.ImageField(default='post_default.jpeg', upload_to='post_images', null=True, blank=True)
+    image_post = models.ImageField(upload_to='post_images', null=True, blank=True)# default='post_default.jpg',
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
