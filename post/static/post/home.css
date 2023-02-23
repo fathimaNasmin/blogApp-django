@@ -16,9 +16,8 @@ a{
 .card{
     width:18rem;
 }
-.pagination{
-    width:50%;
-    margin:auto;
+.pagination li{
+margin:0;
 }
 .pagination .page-link{
     color:black;
@@ -38,8 +37,9 @@ a{
 
     #first-post{
         width:100%;
-        height:400px;
+        height:50vh;
         position:relative;
+        margin-bottom:2%;
 
     }
     .text-overlay {
