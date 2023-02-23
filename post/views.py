@@ -3,15 +3,19 @@ from django.shortcuts import render, redirect, get_object_or_404
 from . import forms
 from .models import Post
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 
 # Create your views here.
 def home(request):
     all_post = Post.objects.all().order_by('-date_posted')
-    first_post = all_post[:1]
-    rest_of_posts = all_post[1:]
-    return render(request, 'post/home.html', {'first_post': first_post,
-                                              'rest_of_posts': rest_of_posts})
+    # first_post = all_post[:1]
+    # rest_of_posts = all_post[1:]
+    # Setup paginator
+    paginator = Paginator(all_post, 7)
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
+    return render(request, 'post/home.html', {'posts': posts})
 
 
 def post_detail_view(request, post_id):
@@ -47,7 +51,7 @@ def edit_post(request, post_id):
         messages.error(request, 'You do not have permission to edit this post.')
         return redirect('post:post-detail-view', post_id=post.id)
     if request.method == 'POST':
-        form = forms.PostEditForm(request.POST,request.FILES, instance=post)
+        form = forms.PostEditForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             form.save()
             messages.success(request, 'Your post has been updated.')
