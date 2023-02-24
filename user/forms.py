@@ -1,6 +1,7 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth.models import User
+from .models import Profile
 
 
 class SignUpForm(UserCreationForm):
@@ -57,5 +58,43 @@ class LoginForm(forms.Form):
         widget=forms.PasswordInput(attrs={'class': 'form-control border-0 border-bottom', 'placeholder': 'Password'})
     )
 
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if not User.objects.filter(username=username).exists():
+            raise forms.ValidationError("Username doesn't exists")
+        return username
 
 
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email')
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields['username'].help_text = None
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['profile_image', ]
+
+
+# class PasswordChange(PasswordChangeForm):
+#     def clean(self):
+#         cleaned_data = super().clean()
+#         password = self.cleaned_data['new_password1']
+#         confirm_password = cleaned_data['new_password2']
+#
+#         if password and confirm_password and password != confirm_password:
+#             raise forms.ValidationError('Passwords do not match.')
+#
+#     def clean_old_password(self):
+#         old_password = self.cleaned_data["old_password"]
+#         if not self.user.check_password(old_password):
+#             raise forms.ValidationError(
+#                 self.error_messages['password_incorrect'],
+#                 code='password_incorrect',
+#             )
+#         return old_password

@@ -58,7 +58,7 @@ def edit_post(request, post_id):
             return redirect('post:post-detail-view', post_id=post.id)
     else:
         form = forms.PostEditForm(instance=post)
-    return render(request, 'edit_post.html', {'form': form, 'post': post})
+    return render(request, 'post/edit_post.html', {'form': form, 'post': post})
 
 
 @login_required
@@ -74,3 +74,5 @@ def view_my_blogs(request, pk):
     my_post = Post.objects.filter(user_id=pk)
     print(my_post)
     return render(request, 'post/my_blogs.html', {'my_blogs': my_post})
+
+

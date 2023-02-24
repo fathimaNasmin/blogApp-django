@@ -1,0 +1,23 @@
+{% load static %}
+<style>
+    .selected {
+      font-weight: bold;
+    }
+</style>
+<link rel="stylesheet" href="">
+<ul style="list-style-type: none;padding: 0; margin:0;">
+    <a href="{% url 'user:my-profile' user.id %}" style="text-decoration: none; color:black; margin:0 10%;">
+        <li {% if select == 'profile' %} class="selected" {% endif %} style="margin:0 10%;">My profile</li>
+    </a>
+    <a href="{% url 'user:change-password' user.id %}" style="text-decoration: none; color:black; margin:0 10%;">
+        <li {% if select == 'password' %} class="selected" {% endif %} style="margin:0 10%;">Change Password</li>
+    </a>
+    <a href="{% url 'user:delete-profile' user.id %}" style="text-decoration: none; color:black; margin:0 10%;">
+        <li {% if select == 'delete' %} class="selected" {% endif %} style="margin:0 10%;">Delete My Account</li>
+    </a>
+</ul>
+
+
+
+
+

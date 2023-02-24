@@ -54,7 +54,7 @@
                           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
                             <li><a class="dropdown-item" href="{% url 'post:create-new-post' user.id %}">Create Blog</a></li>
                             <li><a class="dropdown-item" href="{% url 'post:my-blogs' user.id %}">My Blogs</a></li>
-                              <li><a class="dropdown-item" href="#">Settings</a></li>
+                              <li><a class="dropdown-item" href="{% url 'user:my-profile' user.id %}">Settings</a></li>
                             <li><a class="dropdown-item" href="{% url 'user:logout' %}">Logout</a></li>
                           </ul>
                         </div>
