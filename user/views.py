@@ -103,10 +103,6 @@ def change_password(request, pk):
         'select': 'password'
     })
 
-# TODO : display the profile picture
-# TODO : forgot password?
-# TODO: Social authentication
-# TODO: static file-aws s3
-#TODO: hide the secret key's before deploying
+
 
 # username:admin; password: legacy0711
