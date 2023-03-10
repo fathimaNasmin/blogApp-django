@@ -1,9 +1,3 @@
-# TODO : display the profile picture
-# TODO : forgot password?
-# TODO: Social authentication
-# TODO: static file-aws s3
-#TODO: how secret keys are run in production
-
 import os
 from pathlib import Path
 from dotenv import load_dotenv
