@@ -1,0 +1,92 @@
+footer{
+    background-color:#f2f2f2;
+    color:black;
+
+}
+
+#footer-div{
+    padding:2% 8%;
+}
+p{
+    color:black;
+}
+ul {
+  list-style: none;
+
+}
+
+#footer-div li {
+  padding: 10px;
+  margin-right: 20px;
+  font-weight:500;
+}
+.left-content{
+    text-align:left;
+}
+.play-store-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 50px;
+  color: black;
+  border-radius: 5px;
+  border-style: solid;
+  border-color:black;
+  text-align: center;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.play-store-button i {
+  font-size: 32px;
+  margin-right: 10px;
+}
+.play-store-button p {
+  margin:0;
+}
+
+
+
+@media(min-width:1024px){
+    p{
+        color:black;
+    }
+    ul {
+      list-style: none;
+      display: flex;
+    }
+
+    li {
+      padding: 10px;
+      margin-right: 20px;
+      font-weight:500;
+    }
+    .left-content{
+        text-align:left;
+    }
+    .play-store-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 200px;
+      height: 50px;
+      color: black;
+      border-radius: 5px;
+      border-style: solid;
+      border-color:black;
+      text-align: center;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .play-store-button i {
+      font-size: 32px;
+      margin-right: 10px;
+    }
+    .play-store-button p {
+      margin:0;
+    }
+
+
+}

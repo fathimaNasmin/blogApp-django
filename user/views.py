@@ -30,6 +30,7 @@ def login_user(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             user = authenticate(request, username=username, password=password)
+            print(user)
             if user is not None:
                 login(request, user)
                 return redirect('post:home')
@@ -65,7 +66,7 @@ def my_profile(request, pk):
 
     else:
         u_form = forms.UserUpdateForm(instance=request.user)
-        p_form = forms.ProfileUpdateForm(instance=request.user.profile)
+        p_form = forms.ProfileUpdateForm()
 
     context = {
         'u_form': u_form,
