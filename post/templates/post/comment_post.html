@@ -1,0 +1,21 @@
+{% extends 'post/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block main %}
+<div class="w-50 mx-auto">
+    <h3>Add Comment on:</h3>
+    <p><q>{{ post.title }}</q></p>
+    <br><br>
+    <form action="" method="post" autocomplete="off">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="d-flex flex-lg-row">
+            <a class="w-50 mx-2" href=""><button class="btn btn-light border border-dark flex-fill w-100">Cancel</button></a>
+        <button type="submit" class="btn btn-dark flex-fill w-50 mx-4">Submit</button>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}
