@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post
+from .models import Post, Comment
 
 
 class CreatePost(forms.ModelForm):
@@ -19,3 +19,10 @@ class PostEditForm(forms.ModelForm):
     class Meta:
         model = Post
         exclude = ['user', 'date_posted']
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        exclude = ['user_comment', 'post']
+

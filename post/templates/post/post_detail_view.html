@@ -34,7 +34,15 @@
         {{ post.description|linebreaksbr }}
     </div>
     <hr>
-    <div class="d-flex flex-row justify-content-end mb-4 mx-5 px-2">
+    <div class="d-flex flex-row border border-danger w-75 mx-auto">
+        <div class="border border-dark d-flex justify-content-start w-50">
+            <a href="" class="text-decoration-none" style="color:grey">Like</a>&nbsp;&nbsp;
+            <span style="color:grey">&#9679;</span>&nbsp;&nbsp;
+            <a href="{% url 'post:comment-post' post.id %}" class="text-decoration-none" style="color:grey">Comment</a>
+
+        </div>
+
+        <div class="d-flex flex-row justify-content-end border border-dark w-50">
             <button class="btn btn-light border rounded mx-1">
                 <a href="#">
                 <i class="fa-brands fa-twitter fa-xl icon"></i>
@@ -51,7 +59,20 @@
               </a>
             </button>
 
+        </div>
     </div>
+
+    <!--Display Comment-->
+    {% if comments %}
+    {% for comment in comments %}
+    <h2>{{ comment.comment }}</h2>
+
+    {% endfor %}
+    {% else %}
+    <h2>No Comments yet</h2>
+    {% endif%}
+
+
 </div>
 
 

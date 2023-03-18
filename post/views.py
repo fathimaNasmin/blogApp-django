@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from . import forms
-from .models import Post
+from .models import Post, Comment
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
@@ -20,9 +20,10 @@ def home(request):
 
 def post_detail_view(request, post_id):
     post = Post.objects.get(id=post_id)
+    posted_comments = Comment.objects.all()
     if request.user:
         current_user = request.user
-    return render(request, 'post/post_detail_view.html', {'post': post, 'current_user': current_user})
+    return render(request, 'post/post_detail_view.html', {'post': post, 'current_user': current_user, 'comments': posted_comments})
 
 
 @login_required
@@ -74,5 +75,22 @@ def view_my_blogs(request, pk):
     my_post = Post.objects.filter(user_id=pk)
     print(my_post)
     return render(request, 'post/my_blogs.html', {'my_blogs': my_post})
+
+
+@login_required
+def comment_post(request, post_id):
+    current_post = Post.objects.get(id=post_id)
+    print(post_id)
+    if request.method == 'POST':
+        form = forms.CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.cleaned_data['comment']
+            print(comment)
+            new_comment = Comment(comment=comment, user_comment=request.user, post=current_post)
+            new_comment.save()
+            return redirect('post:post-detail-view', post_id=current_post.id)
+    else:
+        form = forms.CommentForm()
+    return render(request, 'post/comment_post.html', {'form': form, 'post': current_post})
 
 
