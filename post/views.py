@@ -20,10 +20,15 @@ def home(request):
 
 def post_detail_view(request, post_id):
     post = Post.objects.get(id=post_id)
-    posted_comments = Comment.objects.all()
+    posted_comments = Comment.objects.filter(post__id=post_id)
+    posted_comments_order = posted_comments.order_by('-date_added')[:5]
+    post_count = posted_comments.count()
     if request.user:
         current_user = request.user
-    return render(request, 'post/post_detail_view.html', {'post': post, 'current_user': current_user, 'comments': posted_comments})
+    return render(request, 'post/post_detail_view.html', {'post': post,
+                                                          'current_user': current_user,
+                                                          'comments': posted_comments_order,
+                                                          'count_of_posts': post_count})
 
 
 @login_required

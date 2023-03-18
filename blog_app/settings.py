@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'dotenv',
     'storages',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [

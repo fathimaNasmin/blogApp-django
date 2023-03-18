@@ -1,5 +1,6 @@
 {% extends 'post/base.html' %}
 {% load static %}
+{% load humanize %}
 {% block style %}
     <link rel="stylesheet" href="{% static 'post/post_detail_view.css' %}">
 {% endblock %}
@@ -34,15 +35,15 @@
         {{ post.description|linebreaksbr }}
     </div>
     <hr>
-    <div class="d-flex flex-row border border-danger w-75 mx-auto">
-        <div class="border border-dark d-flex justify-content-start w-50">
+    <div class="d-flex flex-row w-75 mx-auto">
+        <div class="d-flex justify-content-start w-50">
             <a href="" class="text-decoration-none" style="color:grey">Like</a>&nbsp;&nbsp;
             <span style="color:grey">&#9679;</span>&nbsp;&nbsp;
             <a href="{% url 'post:comment-post' post.id %}" class="text-decoration-none" style="color:grey">Comment</a>
 
         </div>
 
-        <div class="d-flex flex-row justify-content-end border border-dark w-50">
+        <div class="d-flex flex-row justify-content-end w-50">
             <button class="btn btn-light border rounded mx-1">
                 <a href="#">
                 <i class="fa-brands fa-twitter fa-xl icon"></i>
@@ -61,16 +62,37 @@
 
         </div>
     </div>
-
+    <br><br><br>
     <!--Display Comment-->
-    {% if comments %}
-    {% for comment in comments %}
-    <h2>{{ comment.comment }}</h2>
+    <div class="w-75 mx-auto">
+        <p class="fs-4">Comments({{ count_of_posts }})</p>
+        <br><br>
+        {% if comments %}
+        {% for comment in comments %}
+        <div class="d-flex flex-row my-2">
+            <div class="d-flex mx-auto px-2">
+                <img src="{{ comment.user_comment.profile.profile_image.url }}" style="height: 40px; width: 40px; border-radius: 50%;">
+            </div>
+            <div class="d-flex flex-column px-2 flex-grow-1">
+                {% if comment.user_comment.first_name %}
+                    <h6>{{ comment.user_comment.first_name|add:comment.user_comment.last_name }}</h6>
+                {% else %}
+                    <h6>{{ comment.user_comment.username|capfirst }}</h6>
+                {% endif %}
+                <small style="color:grey">{{ comment.date_added|naturaltime }}</small>
+                <p class="fs-6 mt-2">{{ comment.comment }}</p>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <h2>No Comments yet</h2>
+        {% endif%}
+    </div>
 
-    {% endfor %}
-    {% else %}
-    <h2>No Comments yet</h2>
-    {% endif%}
+
+
+
+
 
 
 </div>
