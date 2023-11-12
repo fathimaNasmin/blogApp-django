@@ -94,8 +94,11 @@ def my_profile(request, pk):
             # return JsonResponse(response, safe=False)
         except Exception as e:
             response['exception'] = e
+            response['status'] = 'danger'
+            response['message'] = 'Profile is not updated...Try Again'
         else:
-            response['message'] = "success"
+            response['status'] = 'success'
+            response['message'] = 'Profile Updated Successfully'
 
         return JsonResponse(response, safe=False)
     

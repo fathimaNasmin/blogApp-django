@@ -44,6 +44,7 @@
         const imageInput = document.querySelector('#id_profile_image');
         const profileImage = document.querySelector('.js-profile-image-view')
         const csrf = document.querySelector('input[name=csrfmiddlewaretoken]').value;
+        const messageContainer = document.querySelector('.message-container');
         
 
         let newImage;
@@ -76,10 +77,19 @@
             })
             .then(data => {
                 console.log('data:',data);
+                window.scrollTo(0, 0);
+
+                messageContainer.innerHTML = `<div class="alert alert-${data['status']}" role="alert">
+                                                ${data['message']}
+                                            </div>`;
+                setTimeout(()=>{messageContainer.innerHTML = ''}, 2000);
                 
             })
             .catch(error => {
                 console.log('error:',error);
+                messageContainer.innerHTML = `<div class="alert alert-danger" role="alert">
+                                                ${error}
+                                            </div>`;
                 
             })
             
