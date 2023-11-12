@@ -6,6 +6,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
 from django.contrib.auth.forms import PasswordChangeForm
 
+from django.http import JsonResponse
+
 from . import forms
 
 
@@ -50,24 +52,53 @@ def logout_user(request):
     return redirect('post:home')
 
 
+# @login_required
+# def my_profile(request, pk):
+#     if request.method == 'POST':
+#         try:
+#             u_form = forms.UserUpdateForm(request.POST, instance=request.user)
+#             p_form = forms.ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+#             if u_form.is_valid() and p_form.is_valid():
+#                 u_form.save()
+#                 p_form.save()
+#                 messages.success(request, 'Profile Updated Successfully')
+#             return redirect('user:my-profile', {'pk': request.user.id})
+#         except Exception as e:
+#             print(e)
+
+#     else:
+#         u_form = forms.UserUpdateForm(instance=request.user)
+#         p_form = forms.ProfileUpdateForm()
+
+#     context = {
+#         'u_form': u_form,
+#         'p_form': p_form,
+#         'pk': pk,
+#         'select': 'profile',
+#     }
+#     return render(request, 'user/myprofile.html', context)
+
+
 @login_required
 def my_profile(request, pk):
+    response = {}
+    u_form = forms.UserUpdateForm(request.POST or None, instance=request.user)
+    p_form = forms.ProfileUpdateForm(
+                request.POST or None, request.FILES or None, instance=request.user.profile)
     if request.method == 'POST':
         try:
-            u_form = forms.UserUpdateForm(request.POST, instance=request.user)
-            p_form = forms.ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
             if u_form.is_valid() and p_form.is_valid():
                 u_form.save()
                 p_form.save()
-                messages.success(request, 'Profile Updated Successfully')
-            return redirect('user:my-profile', {'pk': request.user.id})
+                # messages.success(request, 'Profile Updated Successfully')
+            # return JsonResponse(response, safe=False)
         except Exception as e:
-            print(e)
+            response['exception'] = e
+        else:
+            response['message'] = "success"
 
-    else:
-        u_form = forms.UserUpdateForm(instance=request.user)
-        p_form = forms.ProfileUpdateForm()
-
+        return JsonResponse(response, safe=False)
+    
     context = {
         'u_form': u_form,
         'p_form': p_form,
@@ -75,6 +106,8 @@ def my_profile(request, pk):
         'select': 'profile',
     }
     return render(request, 'user/myprofile.html', context)
+
+
 
 
 @login_required

@@ -24,7 +24,8 @@
             <div class="mx-5 my-4 px-5 py-2">
             {% load crispy_forms_tags %}
             {% load crispy_forms_filters %}
-            <form  method="POST" action="{% url 'user:my-profile' user.id %}" novalidate enctype="multipart/form-data">
+
+            <form id="profile-update-form" method="POST" action="{% url 'user:my-profile' user.id %}" novalidate enctype="multipart/form-data" data-user-id="{{user.id}}">
             {% csrf_token %}
                 {{ u_form|crispy }}
                 {{ p_form|crispy }}
@@ -39,20 +40,53 @@
 
 {% block script %} 
     <script>
+        const updateForm = document.querySelector('#profile-update-form');
         const imageInput = document.querySelector('#id_profile_image');
         const profileImage = document.querySelector('.js-profile-image-view')
+        const csrf = document.querySelector('input[name=csrfmiddlewaretoken]').value;
+        
 
+        let newImage;
         imageInput.addEventListener('change', ()=>{
-            // console.log('changed')
-            const imageFile = imageInput.files[0]
-            // console.log(imageFile);
-            const newImage = URL.createObjectURL(imageFile)
+            newImage = URL.createObjectURL(imageInput.files[0])
             profileImage.src = newImage;
-            // console.log(profileImage);
-            
+        });
 
+        updateForm.addEventListener('submit', (event)=>{
+            event.preventDefault();
+
+            const formData = new FormData();
+            formData.append('csrfmiddlewaretoken', csrf);
+            formData.append('first_name',document.getElementById('id_first_name').value);
+            formData.append('last_name',document.getElementById('id_last_name').value);
+            formData.append('email',document.getElementById('id_email').value);
+            formData.append('profile_image',newImage);
+
+            const userId = updateForm.dataset.userId;
+            
+            fetch(`/user/${userId}/myprofile/`, {
+                method :'POST',
+                body: formData
+            })
+            .then(response => {
+                if(!response.ok){
+                    throw new Error("Something went wrong on API server!");
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('data:',data);
+                
+            })
+            .catch(error => {
+                console.log('error:',error);
+                
+            })
             
         })
+
+
+
         
         
     </script>
