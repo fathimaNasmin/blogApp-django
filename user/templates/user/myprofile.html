@@ -20,7 +20,7 @@
         </div>
         <div class="flex-grow-1 w-25 h-100">
             <h4 class="mx-5 my-3">My Profile</h4>
-            <img id="profile-image-view" src="{{request.user.profile.profile_image.url}}" alt="">
+            <img id="profile-image-view" class="js-profile-image-view" src="{{request.user.profile.profile_image.url}}" alt="">
             <div class="mx-5 my-4 px-5 py-2">
             {% load crispy_forms_tags %}
             {% load crispy_forms_filters %}
@@ -35,5 +35,26 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block script %} 
+    <script>
+        const imageInput = document.querySelector('#id_profile_image');
+        const profileImage = document.querySelector('.js-profile-image-view')
+
+        imageInput.addEventListener('change', ()=>{
+            // console.log('changed')
+            const imageFile = imageInput.files[0]
+            // console.log(imageFile);
+            const newImage = URL.createObjectURL(imageFile)
+            profileImage.src = newImage;
+            // console.log(profileImage);
+            
+
+            
+        })
+        
+        
+    </script>
 {% endblock %}
 
