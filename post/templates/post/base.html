@@ -93,9 +93,9 @@
     {% block newsletter %}{% endblock %}
     {% block footer %}{% endblock %}
 
-    <script>
-        {% block script %} {% endblock %}
-    </script>
+   
+    {% block script %} {% endblock %}
+    
 
     <!-- Optional JavaScript; choose one of the two! -->
 
@@ -103,24 +103,24 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
     <script>
-        // Get the message element
-        var message = document.getElementById("msg");
+        // // Get the message element
+        // var message = document.getElementById("msg");
 
-        // Fade out the message
-        function fadeOutMessage() {
-          var opacity = 1;
-          var fadeInterval = setInterval(function() {
-            if (opacity <= 0) {
-              clearInterval(fadeInterval);
-              message.style.display = "none";
-            }
-            message.style.opacity = opacity;
-            opacity -= 0.1;
-          }, 50);
-        }
+        // // Fade out the message
+        // function fadeOutMessage() {
+        //   var opacity = 1;
+        //   var fadeInterval = setInterval(function() {
+        //     if (opacity <= 0) {
+        //       clearInterval(fadeInterval);
+        //       message.style.display = "none";
+        //     }
+        //     message.style.opacity = opacity;
+        //     opacity -= 0.1;
+        //   }, 50);
+        // }
 
-        // Call the fadeOutMessage function after 3 seconds
-        setTimeout(fadeOutMessage, 2000);
+        // // Call the fadeOutMessage function after 3 seconds
+        // setTimeout(fadeOutMessage, 2000);
     </script>
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
