@@ -1,7 +1,14 @@
 {% extends 'post/base.html' %}
 {% load static %}
 {% block style %}
-
+    <style>
+        #profile-image-view{
+            height: 170px;
+            width: 170px;
+            border-radius: 50%;
+            margin: 0px 190px;
+        }
+    </style>
 {% endblock %}
 
 {% block main %}
@@ -13,6 +20,7 @@
         </div>
         <div class="flex-grow-1 w-25 h-100">
             <h4 class="mx-5 my-3">My Profile</h4>
+            <img id="profile-image-view" src="{{request.user.profile.profile_image.url}}" alt="">
             <div class="mx-5 my-4 px-5 py-2">
             {% load crispy_forms_tags %}
             {% load crispy_forms_filters %}
