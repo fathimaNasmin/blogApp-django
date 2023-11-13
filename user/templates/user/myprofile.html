@@ -87,18 +87,28 @@
                 messageContainer.innerHTML = `<div class="alert alert-${data['status']}" role="alert">
                                                 ${data['message']}
                                             </div>`;
-                setTimeout(()=>{messageContainer.innerHTML = ''}, 2000);
+                
+                setTimeout(()=>{
+                    messageContainer.innerHTML = '';
+                    document.location.reload(true);
+                }, 2000);
+                
                 
             })
             .catch(error => {
                 console.log('error:',error);
+                window.scrollTo(0, 0);
                 messageContainer.innerHTML = `<div class="alert alert-danger" role="alert">
                                                 ${error}
                                             </div>`;
+                setTimeout(() => {
+                    messageContainer.innerHTML = '';
+                    document.location.reload(true);
+                }, 2000);
                 
             })
             
-        })
+        });
 
 
 
