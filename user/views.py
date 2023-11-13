@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
 from django.contrib.auth.forms import PasswordChangeForm
 
+from .models import User,Profile
 from django.http import JsonResponse
 
 from . import forms
@@ -82,20 +83,25 @@ def logout_user(request):
 @login_required
 def my_profile(request, pk):
     response = {}
+    user = User.objects.get(id=pk)
     u_form = forms.UserUpdateForm(request.POST or None, instance=request.user)
     p_form = forms.ProfileUpdateForm(
-                request.POST or None, request.FILES or None, instance=request.user.profile)
+                request.POST or None, request.FILES or None)
     if request.method == 'POST':
+        print(request.POST)
+        print(request.FILES)
         try:
             if u_form.is_valid() and p_form.is_valid():
                 u_form.save()
-                p_form.save()
-                # messages.success(request, 'Profile Updated Successfully')
-            # return JsonResponse(response, safe=False)
+                new_image = request.FILES['profile_image']
+                profile_instance = user.profile
+                profile_instance.profile_image = new_image
+                profile_instance.save()
         except Exception as e:
-            response['exception'] = e
+            response['exception'] = str(e)
             response['status'] = 'danger'
             response['message'] = 'Profile is not updated...Try Again'
+            print(response['exception'])
         else:
             response['status'] = 'success'
             response['message'] = 'Profile Updated Successfully'

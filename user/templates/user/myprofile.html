@@ -20,7 +20,7 @@
         </div>
         <div class="flex-grow-1 w-25 h-100">
             <h4 class="mx-5 my-3">My Profile</h4>
-            <img id="profile-image-view" class="js-profile-image-view" src="{{request.user.profile.profile_image.url}}" alt="">
+            <img id="profile-image-view" class="js-profile-image-view" src="{{request.user.profile.profile_image.url}}" alt="profile-picture">
             <div class="mx-5 my-4 px-5 py-2">
             {% load crispy_forms_tags %}
             {% load crispy_forms_filters %}
@@ -45,6 +45,11 @@
         const profileImage = document.querySelector('.js-profile-image-view')
         const csrf = document.querySelector('input[name=csrfmiddlewaretoken]').value;
         const messageContainer = document.querySelector('.message-container');
+
+        console.log(csrf);
+        console.log(imageInput.files[0]);
+        
+        
         
 
         let newImage;
@@ -61,7 +66,7 @@
             formData.append('first_name',document.getElementById('id_first_name').value);
             formData.append('last_name',document.getElementById('id_last_name').value);
             formData.append('email',document.getElementById('id_email').value);
-            formData.append('profile_image',newImage);
+            formData.append('profile_image', imageInput.files[0]);
 
             const userId = updateForm.dataset.userId;
             
@@ -71,7 +76,7 @@
             })
             .then(response => {
                 if(!response.ok){
-                    throw new Error("Something went wrong on API server!");
+                    throw new Error(`Error on Server - ${response['message']}`);
                 }
                 return response.json();
             })
