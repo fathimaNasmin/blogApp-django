@@ -53,33 +53,6 @@ def logout_user(request):
     return redirect('post:home')
 
 
-# @login_required
-# def my_profile(request, pk):
-#     if request.method == 'POST':
-#         try:
-#             u_form = forms.UserUpdateForm(request.POST, instance=request.user)
-#             p_form = forms.ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
-#             if u_form.is_valid() and p_form.is_valid():
-#                 u_form.save()
-#                 p_form.save()
-#                 messages.success(request, 'Profile Updated Successfully')
-#             return redirect('user:my-profile', {'pk': request.user.id})
-#         except Exception as e:
-#             print(e)
-
-#     else:
-#         u_form = forms.UserUpdateForm(instance=request.user)
-#         p_form = forms.ProfileUpdateForm()
-
-#     context = {
-#         'u_form': u_form,
-#         'p_form': p_form,
-#         'pk': pk,
-#         'select': 'profile',
-#     }
-#     return render(request, 'user/myprofile.html', context)
-
-
 @login_required
 def my_profile(request, pk):
     response = {}

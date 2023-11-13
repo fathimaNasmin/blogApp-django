@@ -11,6 +11,11 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'{self.user.username} Profile'
+    
+    @property
+    def full_name(self):
+        "Returns the person's full name."
+        return f"{self.user.first_name.title()} {self.user.last_name.title()}"
       
     # Resize the image when a user upload
     def save(self, *args, **kwargs):
