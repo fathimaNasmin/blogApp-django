@@ -19,8 +19,8 @@ class Profile(models.Model):
         img = Image.open(self.profile_image.path)  # Open image
 
         # resize image
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
+        if img.height > 300 or img.width > 400:
+            output_size = (400, 300)
             img.thumbnail(output_size)  # Resize image
             # Save it again and override the larger image
             img.save(self.profile_image.path)
