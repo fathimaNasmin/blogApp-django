@@ -2,13 +2,15 @@ from django.db import models
 from user.models import User
 from django.db import models
 from django.utils import timezone
+from ckeditor.fields import RichTextField
 
 
 # Create your models here.
 class Post(models.Model):
     title = models.CharField(max_length=250)
     sub_title = models.CharField(max_length=300)
-    description = models.TextField()
+    # description = models.TextField()
+    description = RichTextField()
     date_posted = models.DateTimeField(default=timezone.now)
     image_post = models.ImageField(upload_to='post_images', null=True, blank=True)# default='post_default.jpg',
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'dotenv',
     'django.contrib.humanize',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [

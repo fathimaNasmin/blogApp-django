@@ -18,6 +18,7 @@
         <br>
         <form action="{% url 'post:create-new-post' user.id %}" method="post" autocomplete="off" enctype="multipart/form-data">
             {% csrf_token %}
+            {{ form.media }}
             {{ form|crispy }}
             <div class="d-flex flex-lg-row">
                 <a class="w-50 mx-2" href=""><button class="btn btn-light border border-dark flex-fill w-100">Cancel</button></a>

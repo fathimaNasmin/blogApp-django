@@ -30,10 +30,7 @@
         <form action="{% url 'user:signup' %}" method="post" autocomplete="off">
             {% csrf_token %}
             {{ form|crispy }}
-
-
-
-            <button type="submit" class="btn btn-dark w-100 mt-3 mb-4">Sign Up</button>
+          <button type="submit" class="btn btn-dark w-100 mt-3 mb-4">Sign Up</button>
         </form>
       </div>
 

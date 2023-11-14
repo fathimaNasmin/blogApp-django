@@ -14,7 +14,11 @@
             <img src="{{ post.user.profile.profile_image.url }}" style="height: 55px; width: 55px; border-radius: 50%;">
         </div>
         <div class=" d-flex flex-column justify-content-center mx-2">
-           <h6 class="text-start">{{ post.user.username }}</h6>
+           <h6 class="text-start">{% if not post.user.profile.full_name %}
+        {{ post.user.username }}
+        {% else %}
+        {{post.user.profile.full_name}}
+        {% endif %}</h6>
             <p class="sub-title text-start">{{ post.date_posted|date:"D d M Y" }}</p>
         </div>
     </div>
@@ -32,7 +36,7 @@
         <img class="text-center" src="{{ post.image_post.url }}" alt="" style="object-fit: contain;width:100%;height:auto;">
     </div>
     <div class="post-content">
-        {{ post.description|linebreaksbr }}
+        {{ post.description|safe|linebreaksbr }}
     </div>
     <hr>
     <div class="d-flex flex-row w-75 mx-auto">
