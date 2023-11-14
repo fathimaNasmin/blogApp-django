@@ -12,14 +12,10 @@ from django.http import JsonResponse
 from . import forms
 
 
-# TODO: write test.py
-
 def signup(request):
     form = forms.SignUpForm(request.POST or None)
     if form.is_valid():
         form.save()
-        print("form is valid")
-        print('Account created successfully')
         messages.success(request, 'Account created successfully')
         return redirect('user:signup')
     return render(request, 'user/signup.html', {'form': form})
@@ -33,12 +29,10 @@ def login_user(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             user = authenticate(request, username=username, password=password)
-            print(user)
             if user is not None:
                 login(request, user)
                 return redirect('post:home')
 
-            print('Invalid username or password')
             messages.error(request, "User doesn't exists")
             return redirect('user:login')
     # else:
@@ -61,8 +55,6 @@ def my_profile(request, pk):
     p_form = forms.ProfileUpdateForm(
                 request.POST or None, request.FILES or None)
     if request.method == 'POST':
-        print(request.POST)
-        print(request.FILES)
         try:
             if u_form.is_valid() and p_form.is_valid():
                 u_form.save()
@@ -74,7 +66,6 @@ def my_profile(request, pk):
             response['exception'] = str(e)
             response['status'] = 'danger'
             response['message'] = 'Profile is not updated...Try Again'
-            print(response['exception'])
         else:
             response['status'] = 'success'
             response['message'] = 'Profile Updated Successfully'
@@ -120,5 +111,3 @@ def change_password(request, pk):
     })
 
 
-
-# username:admin; password: legacy0711
