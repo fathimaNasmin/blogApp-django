@@ -29,6 +29,7 @@
         <form action="{% url 'user:login' %}" method="post" autocomplete="off">
             {% csrf_token %}
             {{ form|crispy }}
+            <a class="float-end text-decoration-none text-dark" href="{% url 'password_reset' %}">Forgot Password?</a>
             <button type="submit" class="btn btn-dark w-100 mt-4 mb-4">Log In</button>
             <p class="text-center">Don't have an Account?&nbsp;<a class="text-decoration-none" href="{% url 'user:signup' %}"><bold>Sign up for free</bold></a></p>
         </form>
