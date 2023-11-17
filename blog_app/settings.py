@@ -39,7 +39,11 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
 ]
+
+# Client ID:4552d1ddffe02f58b193
+# client secret :d7278468c930ec8ae2545ef68b83e0a24f8487a7
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -200,6 +204,13 @@ SOCIALACCOUNT_PROVIDERS = {
         'client_id': '961397447703-qb6dn3hnvt6bnlhadvlmv1o5uha7d6i6.apps.googleusercontent.com',
         'secret': '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',
         'key': ''
+    }, 
+    'github': {
+        'SCOPE': [
+            'user',
+            'repo',
+            'read:org',
+        ],
     }
 }
 
