@@ -42,8 +42,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
 ]
 
-# Client ID:4552d1ddffe02f58b193
-# client secret :d7278468c930ec8ae2545ef68b83e0a24f8487a7
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -183,9 +182,6 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
 
 
 # Google Authentication
-
-
-
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
@@ -193,6 +189,7 @@ AUTHENTICATION_BACKENDS = [
 
 
 SITE_ID = 1
+
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -201,8 +198,8 @@ SOCIALACCOUNT_PROVIDERS = {
         'OAUTH_PKCE_ENABLED': True,
     },
     'APP': {
-        'client_id': '961397447703-qb6dn3hnvt6bnlhadvlmv1o5uha7d6i6.apps.googleusercontent.com',
-        'secret': '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',
+        'client_id': os.getenv('GOOGLE_AUTH_CLIENT_ID'),
+        'secret': os.getenv('GOOGLE_AUTH_SECRET'),
         'key': ''
     }, 
     'github': {

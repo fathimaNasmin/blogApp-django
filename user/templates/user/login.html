@@ -22,6 +22,15 @@
 
             </div>
         </div>
+        <!-- github -->
+        <div class="row mt-3">
+          {% load socialaccount %}
+          <div class="col-md-12 d-flex justify-content-center">
+            <a class="btn btn-dark text-center" href="{% provider_login_url 'github' %}"><i class="fa-brands fa-github"></i>
+              Login Using Github</a>
+        
+          </div>
+        </div>
         <div class="or-container">
           <div class="line-separator"></div>
           <div class="or-label">or</div>
