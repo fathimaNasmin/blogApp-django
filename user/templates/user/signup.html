@@ -22,6 +22,16 @@
 
             </div>
         </div>
+        <!-- github -->
+        <div class="row mt-3">
+          {% load socialaccount %}
+          <div class="col-md-12 d-flex justify-content-center">
+            <a class="btn btn-dark text-center"
+              href="{% provider_login_url 'google'%}?next=/"><i class="fa-brands fa-github"></i>
+              Signup Using Github</a>
+        
+          </div>
+        </div>
         <div class="or-container">
           <div class="line-separator"></div>
           <div class="or-label">or</div>
@@ -36,7 +46,7 @@
         </form>
       </div>
 
-    <div class=" w-50 d-none d-lg-block right-image" style="background-image: url('{% static "user/images/signup-wallpaper.jpg" %}');"></div>
+    <div class=" w-50 d-none d-lg-block right-image" style="background-image: url('{% static "user/images/signup-wallpaper.jpg" %}')"></div>
 
 </div>
 
