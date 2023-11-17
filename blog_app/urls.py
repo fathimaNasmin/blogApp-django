@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('post.urls')),
     path('user/', include('user.urls')),
+    path('accounts/', include('allauth.urls')),#allauth url
     
     # Password reset
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='user/password_reset/password_reset.html'),
