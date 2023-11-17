@@ -14,8 +14,9 @@
         <p class="text-center">Please enter your details</p>
         <br>
         <div class="row">
+          {% load socialaccount %}
             <div class="col-md-12 d-flex justify-content-center">
-              <a class="btn btn-google btn-block btn-outline-secondary text-center" href="https://www.google.com/">
+              <a class="btn btn-google btn-block btn-outline-secondary text-center" href="{% provider_login_url 'google'%}?next=/">
                 <img src="https://img.icons8.com/color/16/000000/google-logo.png">&nbsp;Login With Google
               </a>
 

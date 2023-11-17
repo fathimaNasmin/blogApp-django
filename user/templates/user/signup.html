@@ -1,7 +1,7 @@
 {% extends 'post/base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
-{% load socialaccount %}
+
 
 {% block style %}
   <link rel="stylesheet" href="{% static 'user/signup.css' %}">
@@ -15,6 +15,7 @@
         <p class="text-center">Fill the form to Sign Up</p>
         <br>
         <div class="row">
+          {% load socialaccount %}
             <div class="col-md-12 d-flex justify-content-center">
               <a class="btn btn-google btn-block btn-outline-secondary text-center" href="{% provider_login_url 'google'%}?next=/">
                 <img src="https://img.icons8.com/color/16/000000/google-logo.png"> Signup Using Google</a>
