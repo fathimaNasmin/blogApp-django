@@ -11,12 +11,24 @@ from django.http import JsonResponse
 
 from . import forms
 
+from .utils import custom_register_mail
+
+from django.core.mail import send_mail
+from django.core.mail.backends.console import EmailBackend
+from django.conf import settings
+
 
 def signup(request):
     form = forms.SignUpForm(request.POST or None)
     if form.is_valid():
-        form.save()
+        # form.save()
+        user_email = form.cleaned_data['email']
         messages.success(request, 'Account created successfully')
+        custom_register_mail(
+            subject='Blog App - Account creation',
+            message='This is mail to inform that a new account has been created in blog website.You can enjoy our service',
+            mail_to=[user_email],
+        )
         return redirect('user:signup')
     return render(request, 'user/signup.html', {'form': form})
 
