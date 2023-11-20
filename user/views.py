@@ -11,6 +11,8 @@ from django.http import JsonResponse
 
 from . import forms
 
+from user.signals import user_profile_updated
+
 
 def signup(request):
     form = forms.SignUpForm(request.POST or None)
@@ -59,11 +61,25 @@ def my_profile(request, pk):
         try:
             if u_form.is_valid() and p_form.is_valid():
                 u_form.save()
-                new_image = request.FILES['profile_image']
-                profile_instance = user.profile
-                profile_instance.profile_image = new_image
-                profile_instance.save()
+                if request.FILES['profile_image']:
+                    new_image = request.FILES['profile_image']
+                    profile_instance = user.profile
+                    profile_instance.profile_image = new_image
+                    profile_instance.save()
+                
+                # Emit the signal to send mail to the user on user updation
+                try:
+                    user_profile_updated.send(sender=User, instance=user)
+                except Exception as signal_exception:
+                    print(signal_exception)
+                else:
+                    print("mail send")
+            else:
+                print("form is not valid")
+                print("u_form error:",u_form.errors)
+                print("p_form error:",p_form.errors)
         except Exception as e:
+            print(e)
             response['exception'] = str(e)
             response['status'] = 'danger'
             response['message'] = 'Profile is not updated...Try Again'

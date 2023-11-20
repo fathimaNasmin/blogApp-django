@@ -46,12 +46,6 @@
         const csrf = document.querySelector('input[name=csrfmiddlewaretoken]').value;
         const messageContainer = document.querySelector('.message-container');
 
-        console.log(csrf);
-        console.log(imageInput.files[0]);
-        
-        
-        
-
         let newImage;
         imageInput.addEventListener('change', ()=>{
             newImage = URL.createObjectURL(imageInput.files[0])
