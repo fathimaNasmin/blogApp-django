@@ -4,27 +4,36 @@ from django.core.mail.backends.console import EmailBackend
 
 from django.forms.models import model_to_dict
 
+
 def send_profile_update_mail(user_profile):
     """ 
     Send mail method on user profile is updated.
     """
-    console_backend = EmailBackend()
     
     subject = 'Profile Update Notification'
     message = 'Profile Update Notification.\nYour profile has been updated. Thank you for using our service.'
     from_email = 'blogApp@webapplication.com'
     mail_to = [user_profile.email]
     
-    send_mail(
-        subject,
-        message,
-        'blogApp@webapplication.com',
-        mail_to,
-        fail_silently=False,
-        auth_user=settings.EMAIL_HOST_USER,
-        auth_password=settings.EMAIL_HOST_PASSWORD,
-        connection=console_backend
-    )
+    # send_mail(
+    #     subject,
+    #     message,
+    #     'blogApp@webapplication.com',
+    #     mail_to,
+    #     fail_silently=False,
+    #     auth_user=settings.EMAIL_HOST_USER,
+    #     auth_password=settings.EMAIL_HOST_PASSWORD,
+    # )
+    
+    # Django mail template
+    from django.core.mail import EmailMultiAlternatives
+
+    subject, from_email, to = "hello", "from@example.com", mail_to
+    text_content = "This is an test message on profile updation."
+    html_content = "<p>This is an <strong>test</strong> message.Profile Update Notification.</p>"
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
     
     
     

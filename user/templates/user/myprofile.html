@@ -32,7 +32,7 @@
             {% csrf_token %}
                 {{ u_form|crispy }}
                 {{ p_form|crispy }}
-                <button type="submit" class="btn btn-dark mt-3">Update</button>
+                <button type="submit" class="btn btn-dark mt-3" id="update-id">Update</button>
             </form>
             </div>
         </div>
@@ -51,6 +51,7 @@
 
         let newImage;
         let errorDiv = document.createElement('div');
+        console.log(document.getElementById("update-id"));
 
         let validateImage = (fileType) => {
             if (fileType === 'image/jpeg' || fileType === 'image/png'
@@ -63,8 +64,11 @@
             
         }
 
+        var imageChanged = false;
+
         imageInput.addEventListener('change', ()=>{
             errorDiv.remove();
+            imageChanged = true;
             console.log(imageInput.files[0].type);
             imageFileType = imageInput.files[0].type;
 
@@ -83,61 +87,64 @@
         updateForm.addEventListener('submit', (event)=>{
             event.preventDefault();
 
-            if (validateImage(imageInput.files[0].type)){
-                const formData = new FormData();
-                formData.append('csrfmiddlewaretoken', csrf);
-                formData.append('first_name', document.getElementById('id_first_name').value);
-                formData.append('last_name', document.getElementById('id_last_name').value);
-                formData.append('email', document.getElementById('id_email').value);
-                formData.append('profile_image', imageInput.files[0]);
-
-                console.log(imageInput.files[0]);
-
-
-                const userId = updateForm.dataset.userId;
-
-                fetch(`/user/${userId}/myprofile/`, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Error on Server - ${response['message']}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('data:', data);
-                    window.scrollTo(0, 0);
-
-                    messageContainer.innerHTML = `<div class="alert alert-${data['status']}" role="alert">
-                                            ${data['message']}
-                                        </div>`;
-
-                    setTimeout(() => {
-                        messageContainer.innerHTML = '';
-                        document.location.reload(true);
-                    }, 2000);
-
-
-                })
-                .catch(error => {
-                    console.log('error:', error);
-                    window.scrollTo(0, 0);
-                    messageContainer.innerHTML = `<div class="alert alert-danger" role="alert">
-                                            ${error}
-                                        </div>`;
-                    setTimeout(() => {
-                        messageContainer.innerHTML = '';
-                        document.location.reload(true);
-                    }, 2000);
-
-                })
-            }else{
-                console.log('form is not submitted');
+            if (imageChanged) {
+                const validateImageInput = validateImage(imageInput.files[0].type)
+                console.log(validateImageInput);
                 
+                if (!validateImageInput){
+                    document.querySelector("#update-id").disabled = true;
+                }
             }
             
+            const formData = new FormData();
+            formData.append('csrfmiddlewaretoken', csrf);
+            formData.append('first_name', document.getElementById('id_first_name').value);
+            formData.append('last_name', document.getElementById('id_last_name').value);
+            formData.append('email', document.getElementById('id_email').value);
+            formData.append('profile_image', imageInput.files[0]);
+
+            console.log(imageInput.files[0]);
+
+
+            const userId = updateForm.dataset.userId;
+
+            fetch(`/user/${userId}/myprofile/`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Error on Server - ${response['message']}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('data:', data);
+                window.scrollTo(0, 0);
+
+                messageContainer.innerHTML = `<div class="alert alert-${data['status']}" role="alert">
+                                        ${data['message']}
+                                    </div>`;
+
+                setTimeout(() => {
+                    messageContainer.innerHTML = '';
+                    document.location.reload(true);
+                }, 5000);
+
+
+            })
+            .catch(error => {
+                console.log('error:', error);
+                window.scrollTo(0, 0);
+                messageContainer.innerHTML = `<div class="alert alert-danger" role="alert">
+                                        ${error}
+                                    </div>`;
+                setTimeout(() => {
+                    messageContainer.innerHTML = '';
+                    document.location.reload(true);
+                }, 5000);
+
+            })
             
         });
 

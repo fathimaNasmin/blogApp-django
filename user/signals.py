@@ -12,6 +12,10 @@ from user.utils import user_model_fields_changed,send_profile_update_mail
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
+    """
+    Signals to create a profile instance for the new user and 
+    send mail to the user.
+    """
     if created:
         Profile.objects.create(user=instance)
         
