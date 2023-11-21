@@ -49,5 +49,5 @@ def handle_user_profile_update(sender, instance, **kwargs):
     # Get the original instance from the database
     original_instance = sender.objects.get(pk=instance.pk)
     # Check if user profile is updated
-    if user_model_fields_changed(original_instance, instance, ['first_name','last_name', 'password']):
+    if user_model_fields_changed(original_instance, instance, ['first_name','last_name', 'password','profile_image']):
         send_profile_update_mail(original_instance)

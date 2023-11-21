@@ -1,3 +1,4 @@
+import os
 from django.contrib import messages
 from django.contrib.auth import authenticate, logout, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
@@ -6,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse
 from django.contrib.auth.forms import PasswordChangeForm
 
-from .models import User,Profile
+from .models import User, Profile
 from django.http import JsonResponse
 
 from . import forms
@@ -61,11 +62,34 @@ def my_profile(request, pk):
         try:
             if u_form.is_valid() and p_form.is_valid():
                 u_form.save()
-                if request.FILES['profile_image']:
+                
+                if request.FILES.get('profile_image'):
                     new_image = request.FILES['profile_image']
-                    profile_instance = user.profile
-                    profile_instance.profile_image = new_image
-                    profile_instance.save()
+                    try:
+                        # Check if the original file exists
+                        if user.profile.profile_image and os.path.exists(user.profile.profile_image.path):
+                            # File exists, update it
+                            user.profile.profile_image = new_image
+                            user.profile.save()
+                        else:
+                            # Delete the existing profile instance
+                            try:
+                                if user.profile:
+                                    user.profile.delete()
+                                    print("Deleted existing profile instance")
+                            except Exception as e:
+                                print(
+                                    f"Error deleting existing profile instance: {e}")
+
+                            # Create a new profile instance with the new image
+                            try:
+                                new_profile_instance = Profile.objects.create(
+                                    user=user, profile_image=new_image)
+                                print("Created new profile instance")
+                            except Exception as e:
+                                print("Error creating a new profile instance:", e)
+                    except Exception as e:
+                        print("profile:",e)
                 
                 # Emit the signal to send mail to the user on user updation
                 try:
