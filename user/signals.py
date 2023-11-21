@@ -29,12 +29,11 @@ def create_profile(sender, instance, created, **kwargs):
             from_email,
             mail_to,
             fail_silently=False,
+            auth_user=settings.EMAIL_HOST_USER,
+            auth_password=settings.EMAIL_HOST_PASSWORD,
             connection=console_backend
         )
-        
 
-# auth_user='learnpy22@gmail.com',
-# auth_password=settings.EMAIL_HOST_PASSWORD,
 
 @receiver(post_save, sender=User)
 def save_profile(sender, instance, created, **kwargs):

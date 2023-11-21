@@ -21,7 +21,7 @@ def send_profile_update_mail(user_profile):
         'blogApp@webapplication.com',
         mail_to,
         fail_silently=False,
-        auth_user='learnpy22@gmail.com',
+        auth_user=settings.EMAIL_HOST_USER,
         auth_password=settings.EMAIL_HOST_PASSWORD,
         connection=console_backend
     )
