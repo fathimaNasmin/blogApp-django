@@ -20,8 +20,6 @@ def send_profile_update_mail(user_profile):
     from_email = formataddr((sender_name, sender_email))
 
     subject, to = "Profile Updation Notification", user_profile.email
-    # text_content = "This is an test message on profile updation."
-    # html_content = "<p>This is an <strong>test</strong> message.Profile Update Notification.</p>"
     html_message = render_to_string('user/email_templates/profile_update.html', 
                                     {'firstname':user_profile.first_name,
                                      'lastname':user_profile.last_name})

@@ -3,10 +3,15 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver,Signal
 from .models import Profile
 
-from django.core.mail import send_mail
 from django.conf import settings
 
-from user.utils import user_model_fields_changed,send_profile_update_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
+from email.utils import formataddr
+
+from django.template.loader import render_to_string
+
+from user.utils import (user_model_fields_changed,
+                        send_profile_update_mail)
 
 
 @receiver(post_save, sender=User)
@@ -19,21 +24,18 @@ def create_profile(sender, instance, created, **kwargs):
         Profile.objects.create(user=instance)
         
         # Send mail: Welcoming the new User
-        
-        subject = 'Welcome to Our Website'
-        message = "Welcome to Our Website.\nThank you for registering on our website. We hope you'll enjoy your stay!"
-        from_email = None
-        mail_to = [instance.email]
-        
-        send_mail(
-            subject,
-            message,
-            from_email,
-            mail_to,
-            fail_silently=False,
-            auth_user=settings.EMAIL_HOST_USER,
-            auth_password=settings.EMAIL_HOST_PASSWORD
-        )
+        sender_name = "BlogApp"
+        sender_email = settings.EMAIL_HOST_USER
+        from_email = formataddr((sender_name, sender_email))
+
+        subject, to = "New Account Created", instance.email
+        html_message = render_to_string('user/email_templates/welcome_email.html',
+                                        {'firstname': instance.first_name,
+                                        'lastname': instance.last_name})
+        plain_message = "New Account Created"
+        msg = EmailMultiAlternatives(subject, plain_message, from_email, [to])
+        msg.attach_alternative(html_message, "text/html")
+        msg.send()
 
 
 @receiver(post_save, sender=User)
