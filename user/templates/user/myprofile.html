@@ -75,10 +75,12 @@
             if (validateImage(imageFileType)){
                 newImage = URL.createObjectURL(imageInput.files[0])
                 profileImage.src = newImage;
+                document.querySelector("#update-id").disabled = false;
             }else{
                 errorDiv.textContent = 'Profile image should be .jpeg or .png';
                 errorDiv.classList.add('error-msg');
                 imageInput.parentNode.insertBefore(errorDiv, imageInput.nextSibling);
+                document.querySelector("#update-id").disabled = true;
             }
             
             
@@ -86,24 +88,16 @@
 
         updateForm.addEventListener('submit', (event)=>{
             event.preventDefault();
-
-            if (imageChanged) {
-                const validateImageInput = validateImage(imageInput.files[0].type)
-                console.log(validateImageInput);
-                
-                if (!validateImageInput){
-                    document.querySelector("#update-id").disabled = true;
-                }
-            }
             
             const formData = new FormData();
             formData.append('csrfmiddlewaretoken', csrf);
             formData.append('first_name', document.getElementById('id_first_name').value);
             formData.append('last_name', document.getElementById('id_last_name').value);
             formData.append('email', document.getElementById('id_email').value);
-            formData.append('profile_image', imageInput.files[0]);
 
-            console.log(imageInput.files[0]);
+            if(imageChanged) {
+                formData.append('profile_image', imageInput.files[0]);
+            }
 
 
             const userId = updateForm.dataset.userId;

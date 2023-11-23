@@ -5,7 +5,6 @@ from .models import Profile
 
 from django.core.mail import send_mail
 from django.conf import settings
-from django.core.mail.backends.console import EmailBackend
 
 from user.utils import user_model_fields_changed,send_profile_update_mail
 
@@ -20,11 +19,10 @@ def create_profile(sender, instance, created, **kwargs):
         Profile.objects.create(user=instance)
         
         # Send mail: Welcoming the new User
-        console_backend = EmailBackend()
         
         subject = 'Welcome to Our Website'
         message = "Welcome to Our Website.\nThank you for registering on our website. We hope you'll enjoy your stay!"
-        from_email = 'webmaster@example.com'
+        from_email = None
         mail_to = [instance.email]
         
         send_mail(
@@ -34,8 +32,7 @@ def create_profile(sender, instance, created, **kwargs):
             mail_to,
             fail_silently=False,
             auth_user=settings.EMAIL_HOST_USER,
-            auth_password=settings.EMAIL_HOST_PASSWORD,
-            connection=console_backend
+            auth_password=settings.EMAIL_HOST_PASSWORD
         )
 
 

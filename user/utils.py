@@ -1,8 +1,10 @@
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
+from email.utils import formataddr
 from django.conf import settings
-from django.core.mail.backends.console import EmailBackend
 
 from django.forms.models import model_to_dict
+from django.utils.html import strip_tags
+from django.template.loader import render_to_string
 
 
 def send_profile_update_mail(user_profile):
@@ -10,29 +12,22 @@ def send_profile_update_mail(user_profile):
     Send mail method on user profile is updated.
     """
     
-    subject = 'Profile Update Notification'
-    message = 'Profile Update Notification.\nYour profile has been updated. Thank you for using our service.'
-    from_email = 'blogApp@webapplication.com'
-    mail_to = [user_profile.email]
-    
-    # send_mail(
-    #     subject,
-    #     message,
-    #     'blogApp@webapplication.com',
-    #     mail_to,
-    #     fail_silently=False,
-    #     auth_user=settings.EMAIL_HOST_USER,
-    #     auth_password=settings.EMAIL_HOST_PASSWORD,
-    # )
-    
     # Django mail template
-    from django.core.mail import EmailMultiAlternatives
+    
+    # Use a custom display name and email address
+    sender_name = "BlogApp"
+    sender_email = settings.EMAIL_HOST_USER
+    from_email = formataddr((sender_name, sender_email))
 
-    subject, from_email, to = "hello", "from@example.com", mail_to
-    text_content = "This is an test message on profile updation."
-    html_content = "<p>This is an <strong>test</strong> message.Profile Update Notification.</p>"
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-    msg.attach_alternative(html_content, "text/html")
+    subject, to = "Profile Updation Notification", user_profile.email
+    # text_content = "This is an test message on profile updation."
+    # html_content = "<p>This is an <strong>test</strong> message.Profile Update Notification.</p>"
+    html_message = render_to_string('user/email_templates/profile_update.html', 
+                                    {'firstname':user_profile.first_name,
+                                     'lastname':user_profile.last_name})
+    plain_message = "Profile Update Notification"
+    msg = EmailMultiAlternatives(subject, plain_message, from_email, [to])
+    msg.attach_alternative(html_message, "text/html")
     msg.send()
     
     
@@ -43,6 +38,4 @@ def user_model_fields_changed(new_instance, original_instance, fields):
     """
     new_model_dict = model_to_dict(new_instance,fields=fields)
     original_model_dict = model_to_dict(original_instance, fields=fields)
-    print("new model:", new_model_dict)
-    print("original model:", original_model_dict)
     return any(new_model_dict[field] != original_model_dict[field] for field in fields)

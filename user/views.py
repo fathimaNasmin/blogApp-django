@@ -95,7 +95,7 @@ def my_profile(request, pk):
                 try:
                     user_profile_updated.send(sender=User, instance=user)
                 except Exception as signal_exception:
-                    print(signal_exception)
+                    print("signal_exception:",signal_exception)
                 else:
                     print("mail send")
             else:

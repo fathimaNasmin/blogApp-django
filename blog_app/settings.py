@@ -170,10 +170,15 @@ STATICFILES_DIRS = [BASE_DIR / 'static',]
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# Filebased EmailBackend
+# EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+# EMAIL_FILE_PATH = os.path.join(BASE_DIR, "user/emailFolder")
+
+# Console EmailBackend
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # SMTP Configuration
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
