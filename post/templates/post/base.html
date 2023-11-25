@@ -84,7 +84,7 @@
       <div class="main">
         {% if messages %}
             {% for message in messages %}
-                <div class="alert {{ message.tags }} m-2" id="msg" role="alert">
+                <div class="alert {{ message.tags }} m-2" id="msg" role="alert" style="display: block;">
                     {{ message }}
                 </div>
             {% endfor %}
@@ -121,8 +121,11 @@
               clearInterval(fadeInterval);
               message.style.display = "none";
             }
-            message.style.opacity = opacity;
-            opacity -= 0.1;
+            if(message){
+              message.style.opacity = opacity;
+              opacity -= 0.1;
+            }
+            
           }, 50);
         }
 

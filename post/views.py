@@ -4,6 +4,9 @@ from . import forms
 from .models import Post, Comment, Like
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.views.decorators.csrf import csrf_exempt
+
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -31,6 +34,23 @@ def post_detail_view(request, post_id):
                                                           'comments': posted_comments_order,
                                                           'num_of_comments': post_count,
                                                           'num_of_likes':post_likes})
+    
+
+@csrf_exempt
+def like_post(request, post_id):
+    """post request on like icon to save post likes"""
+    response = {}
+    if request.method == 'POST':
+        post = Post.objects.get(id=post_id)
+        user = request.user
+        
+        if not Like.objects.filter(post=post, user=user).exists():
+            new_like = Like(post=post,user=user)
+            new_like.save()
+        response['success'] = True
+        response['num_likes'] = post.like_set.count()
+        print(post.like_set.count())
+        return JsonResponse(response, safe=False)
 
 
 @login_required
