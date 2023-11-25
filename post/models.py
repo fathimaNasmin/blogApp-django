@@ -9,7 +9,6 @@ from ckeditor.fields import RichTextField
 class Post(models.Model):
     title = models.CharField(max_length=250)
     sub_title = models.CharField(max_length=300)
-    # description = models.TextField()
     description = RichTextField()
     date_posted = models.DateTimeField(default=timezone.now)
     image_post = models.ImageField(upload_to='post_images', null=True, blank=True)# default='post_default.jpg',
@@ -19,6 +18,20 @@ class Post(models.Model):
         return f'{self.user.username, self.title} Post'
 
 
+class Like(models.Model):
+    """Model to store the likes for a post"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ('user', 'post')
+
+    def __str__(self):
+        return f"{self.user.username} likes {self.post.title}"
+    
+    
+    
 class Comment(models.Model):
     comment = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)

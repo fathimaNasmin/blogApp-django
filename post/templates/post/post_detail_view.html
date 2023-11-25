@@ -41,9 +41,15 @@
     <hr>
     <div class="d-flex flex-row w-75 mx-auto">
         <div class="d-flex justify-content-start w-50">
-            <a href="" class="text-decoration-none" style="color:grey">Like</a>&nbsp;&nbsp;
+            <a href="" class="text-decoration-none" style="color:grey">
+                <i class="fa-regular fa-thumbs-up fa-xl"></i>
+                {{ num_of_likes }}
+            </a>&nbsp;&nbsp;
             <span style="color:grey">&#9679;</span>&nbsp;&nbsp;
-            <a href="{% url 'post:comment-post' post.id %}" class="text-decoration-none" style="color:grey">Comment</a>
+            <a href="{% url 'post:comment-post' post.id %}" class="text-decoration-none" style="color:grey">
+                <i class="fa-regular fa-comment fa-xl"></i>
+                {{ num_of_comments }}
+            </a>
 
         </div>
 

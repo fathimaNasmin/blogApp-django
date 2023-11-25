@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from . import forms
-from .models import Post, Comment
+from .models import Post, Comment, Like
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
@@ -23,12 +23,14 @@ def post_detail_view(request, post_id):
     posted_comments = Comment.objects.filter(post__id=post_id)
     posted_comments_order = posted_comments.order_by('-date_added')[:5]
     post_count = posted_comments.count()
+    post_likes = post.like_set.count()
     if request.user:
         current_user = request.user
     return render(request, 'post/post_detail_view.html', {'post': post,
                                                           'current_user': current_user,
                                                           'comments': posted_comments_order,
-                                                          'count_of_posts': post_count})
+                                                          'num_of_comments': post_count,
+                                                          'num_of_likes':post_likes})
 
 
 @login_required
