@@ -12,7 +12,7 @@ urlpatterns = [
     path('myblogs/<int:pk>/', post_view.view_my_blogs, name='my-blogs'),
     path('myblogs/<int:pk>/', post_view.view_my_blogs, name='my-blogs'),
     
-    path('view/<int:post_id>/like', post_view.like_post, name='like-the-post'),
+    path('view/<int:post_id>/like/', post_view.like_unlike_post, name='like-unlike-post'),
 
 
 

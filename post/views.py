@@ -5,8 +5,12 @@ from .models import Post, Comment, Like
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 from django.http import JsonResponse
+
+from user.models import User,Profile
+
 
 
 # Create your views here.
@@ -27,30 +31,49 @@ def post_detail_view(request, post_id):
     posted_comments_order = posted_comments.order_by('-date_added')[:5]
     post_count = posted_comments.count()
     post_likes = post.like_set.count()
+    liked = Like.objects.filter(post=post,user=request.user).exists()
     if request.user:
         current_user = request.user
     return render(request, 'post/post_detail_view.html', {'post': post,
                                                           'current_user': current_user,
                                                           'comments': posted_comments_order,
                                                           'num_of_comments': post_count,
-                                                          'num_of_likes':post_likes})
+                                                          'num_of_likes':post_likes,
+                                                          'user_liked': liked})
     
 
-@csrf_exempt
-def like_post(request, post_id):
-    """post request on like icon to save post likes"""
+
+def like_unlike_post(request,post_id):
+    """like/unlike the specific post by the current user"""
+    user = request.user
     response = {}
+
     if request.method == 'POST':
-        post = Post.objects.get(id=post_id)
-        user = request.user
-        
-        if not Like.objects.filter(post=post, user=user).exists():
-            new_like = Like(post=post,user=user)
-            new_like.save()
-        response['success'] = True
-        response['num_likes'] = post.like_set.count()
-        print(post.like_set.count())
-        return JsonResponse(response, safe=False)
+        data = json.loads(request.body)
+        print('request.POST:',data)
+        post = Post.objects.get(id=data.get('post_id'))
+        like_user_post = Like.objects.filter(user=user, post=post)
+        print('like_user_post:',like_user_post)
+        try:
+            if not like_user_post.exists():
+                # create a new instance
+                new_like_instance = Like.objects.create(user=user,post=post)
+                new_like_instance.save()
+                print("Created new instance")
+                response['created'] = True
+            else:
+                # remove the existing
+                like_user_post.delete()
+                print("deleted the instance")
+                response['created'] = False
+        except Exception as e:
+            response['success'] = False
+            response['message'] = str(e)
+        else:
+            response['success'] = True
+            response['num_likes'] = post.like_set.count()
+        return JsonResponse(response,safe=False)
+    
 
 
 @login_required

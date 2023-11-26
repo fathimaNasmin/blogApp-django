@@ -41,11 +41,22 @@
     <hr>
     <div class="d-flex flex-row w-75 mx-auto">
         <div class="d-flex justify-content-start w-50">
-           
-            <a id="like-icon" data-post-id="{{post.id}}" href="" class="text-decoration-none" style="color:grey">
-                <i id ="like-i" class="fa-regular fa-thumbs-up fa-xl"></i>
-            </a>
-           
+            <!-- Like Unlike button -->
+            <form action="" id="like-unlike-form" data-post-id="{{post.id}}">
+                {% csrf_token %}
+                {% if user_liked %}
+                <button type="submit" id="like-btn" data-like-status="liked" style="border: none;background-color: inherit;color:grey">
+                    <i class="fa-solid fa-thumbs-up fa-xl" id="like-icon"></i>
+                </button>
+                
+                {% else %}
+                <button type="submit" id="like-btn" data-like-status="not-liked" style="border: none;background-color: inherit;">
+                    <i class="fa-regular fa-thumbs-up fa-xl" id="like-icon"></i>
+                </button>
+                
+                {% endif %}
+            </form>
+            <!-- Like Unlike button ends here-->
             
             <p id="likesCount" style="color:grey; padding-left:5px;">{{ num_of_likes }}</p> &nbsp;&nbsp;
 
@@ -134,53 +145,70 @@
 <!--js script-->
 {% block script %}
 <script>
-    likesCount = document.querySelector('#likesCount');
-    likeI = document.querySelector('#like-i');
+    
+    const likeForm = document.getElementById('like-unlike-form');
+    const likeBtn = document.querySelector('#like-btn');
+    const likeIcon = document.querySelector('#like-icon');
+    const likeCount = document.querySelector('#likesCount');
+    const likeStatus = likeBtn.dataset.likeStatus;
+    const csrftoken = document.querySelector("[name='csrfmiddlewaretoken']").value;
+
+    console.log('likeStatus:',likeStatus);
+    console.log('csrftoken:',csrftoken);
+    console.log('likecon:',likeIcon);
+    
+
+    likeForm.addEventListener('submit', (event)=>{
+        event.preventDefault();
+        const postId = parseInt(likeForm.dataset.postId);
+        console.log('post id:',postId);
+        
+        fetch(`/view/${postId}/like/`,{
+            method:'POST',
+            headers: {
+                'Content-Type':'application/json;charset=utf-8',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({
+                'post_id':postId
+            })
+        })
+        .then(response =>{
+            if(!response.ok){
+                throw new Error(`Something went wrong on server.`)
+            }
+            return response.json()
+        })
+        .then(response_data =>{
+            if (response_data['success']) {
+                if (response_data['created']){
+                    likeIcon.classList.add('fa-solid');
+                    likeIcon.classList.remove('fa-regular');
+                    likeCount.innerHTML = response_data['num_likes']
+                }else{
+                    likeIcon.classList.add('fa-regular');
+                    likeIcon.classList.remove('fa-solid');
+                    likeCount.innerHTML = response_data['num_likes']
+                }
+            }
+            console.log(response_data);
+            
+        })
+        .catch(error => {
+            console.log('error:',error);
+            
+        })
+        
+    })
+    
 
     function confirmDelete() {
-            var result = confirm("Are you sure you want to delete this post?");
-            if (result) {
-                // If the user clicks "OK", submit the form
-                document.getElementById("delete-form").submit();
-            }
+        var result = confirm("Are you sure you want to delete this post?");
+        if (result) {
+            // If the user clicks "OK", submit the form
+            document.getElementById("delete-form").submit();
         }
-
-    likeIcon = document.getElementById('like-icon');
-    likeIcon.addEventListener("click", (event)=>{
-        event.preventDefault();
-        console.log('clicked');
-        const postId = likeIcon.dataset.postId;
-        const data = {'post_id':`${postId}`}
-        
-
-        fetch(`/view/${postId}/like`, {
-            method:'POST',
-            body: new URLSearchParams(data),
-            headers:{
-                'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            }
-
-        })
-        .then(response => {
-            if (!response.ok){
-                throw new Error(`Error on Server - ${response['message']}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('response_data:',data);
-            if(data['success']){
-                likesCount.innerHTML = data['num_likes']
-                likeI.classList.remove('fa-regular')
-                likeI.classList.add('fa-solid')
-            }
-            
-        })
-        .catch(error =>{
-            console.log('Error: ',error);
-            
-        })
-    });
+    }
 </script>
     
 
