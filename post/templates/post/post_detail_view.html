@@ -15,10 +15,11 @@
         </div>
         <div class=" d-flex flex-column justify-content-center mx-2">
            <h6 class="text-start">{% if not post.user.profile.full_name %}
-        {{ post.user.username }}
-        {% else %}
-        {{post.user.profile.full_name}}
-        {% endif %}</h6>
+                {{ post.user.username }}
+                {% else %}
+                {{post.user.profile.full_name}}
+                {% endif %}
+            </h6>
             <p class="sub-title text-start">{{ post.date_posted|date:"D d M Y" }}</p>
         </div>
     </div>
@@ -40,32 +41,38 @@
     </div>
     <hr>
     <div class="d-flex flex-row w-75 mx-auto">
-        <div class="d-flex justify-content-start w-50">
+        <div class="d-flex justify-content-start align-items-center w-50">
             <!-- Like Unlike button -->
+            {% if user.is_authenticated %}
             <form action="" id="like-unlike-form" data-post-id="{{post.id}}">
                 {% csrf_token %}
                 {% if user_liked %}
-                <button type="submit" id="like-btn" data-like-status="liked" style="border: none;background-color: inherit;color:grey">
+                <button type="submit" id="like-btn" data-like-status="liked" style="border: none;background-color: inherit;color:grey;">
                     <i class="fa-solid fa-thumbs-up fa-xl" id="like-icon"></i>
                 </button>
                 
                 {% else %}
-                <button type="submit" id="like-btn" data-like-status="not-liked" style="border: none;background-color: inherit;">
+                <button type="submit" id="like-btn" data-like-status="not-liked" style="border: none;background-color: inherit;color:grey;">
                     <i class="fa-regular fa-thumbs-up fa-xl" id="like-icon"></i>
                 </button>
                 
                 {% endif %}
             </form>
+            {% else %}
+            <button type="submit" id="like-btn" data-like-status="not-liked" style="border: none;background-color: inherit;color:grey;cursor: default;">
+                <i class="fa-regular fa-thumbs-up fa-xl" id="like-icon"></i>
+            </button>
+            {% endif %}
             <!-- Like Unlike button ends here-->
             
-            <p id="likesCount" style="color:grey; padding-left:5px;">{{ num_of_likes }}</p> &nbsp;&nbsp;
+            <p id="likesCount" class="my-1 fs-5" style="color:grey; padding-left:8px;">{{ num_of_likes }}</p> &nbsp;&nbsp;
 
             <span style="color:grey">&#9679;</span>&nbsp;&nbsp;
 
             <a href="{% url 'post:comment-post' post.id %}" class="text-decoration-none" style="color:grey">
                 <i class="fa-regular fa-comment fa-xl"></i>
             </a>
-            <p style="color:grey; padding-left:5px;">{{ num_of_comments }}</p>
+            <p class="my-1 fs-5" style="color:grey; padding-left:8px;">{{ num_of_comments }}</p>
 
         </div>
 
@@ -151,55 +158,53 @@
     const likeIcon = document.querySelector('#like-icon');
     const likeCount = document.querySelector('#likesCount');
     const likeStatus = likeBtn.dataset.likeStatus;
-    const csrftoken = document.querySelector("[name='csrfmiddlewaretoken']").value;
+    const csrftoken = document.querySelector("[name='csrfmiddlewaretoken']")
 
-    console.log('likeStatus:',likeStatus);
-    console.log('csrftoken:',csrftoken);
-    console.log('likecon:',likeIcon);
     
+    if (likeForm) {
+        likeForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const postId = parseInt(likeForm.dataset.postId);
+            console.log('post id:', postId);
 
-    likeForm.addEventListener('submit', (event)=>{
-        event.preventDefault();
-        const postId = parseInt(likeForm.dataset.postId);
-        console.log('post id:',postId);
-        
-        fetch(`/view/${postId}/like/`,{
-            method:'POST',
-            headers: {
-                'Content-Type':'application/json;charset=utf-8',
-                'X-CSRFToken': csrftoken,
-            },
-            body: JSON.stringify({
-                'post_id':postId
+            fetch(`/view/${postId}/like/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'X-CSRFToken': csrftoken.value,
+                },
+                body: JSON.stringify({
+                    'post_id': postId
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Something went wrong on server.`)
+                }
+                return response.json()
+            })
+            .then(response_data => {
+                if (response_data['success']) {
+                    if (response_data['created']) {
+                        likeIcon.classList.add('fa-solid');
+                        likeIcon.classList.remove('fa-regular');
+                        likeCount.innerHTML = response_data['num_likes']
+                    } else {
+                        likeIcon.classList.add('fa-regular');
+                        likeIcon.classList.remove('fa-solid');
+                        likeCount.innerHTML = response_data['num_likes']
+                    }
+                }
+                console.log(response_data);
+
+            })
+            .catch(error => {
+                console.log('error:', error);
+
             })
         })
-        .then(response =>{
-            if(!response.ok){
-                throw new Error(`Something went wrong on server.`)
-            }
-            return response.json()
-        })
-        .then(response_data =>{
-            if (response_data['success']) {
-                if (response_data['created']){
-                    likeIcon.classList.add('fa-solid');
-                    likeIcon.classList.remove('fa-regular');
-                    likeCount.innerHTML = response_data['num_likes']
-                }else{
-                    likeIcon.classList.add('fa-regular');
-                    likeIcon.classList.remove('fa-solid');
-                    likeCount.innerHTML = response_data['num_likes']
-                }
-            }
-            console.log(response_data);
-            
-        })
-        .catch(error => {
-            console.log('error:',error);
-            
-        })
-        
-    })
+    }
+    
     
 
     function confirmDelete() {

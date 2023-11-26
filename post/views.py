@@ -31,18 +31,21 @@ def post_detail_view(request, post_id):
     posted_comments_order = posted_comments.order_by('-date_added')[:5]
     post_count = posted_comments.count()
     post_likes = post.like_set.count()
-    liked = Like.objects.filter(post=post,user=request.user).exists()
+    
+    context = {'post': post,
+               'comments': posted_comments_order,
+               'num_of_comments': post_count,
+               'num_of_likes': post_likes
+               }
     if request.user:
         current_user = request.user
-    return render(request, 'post/post_detail_view.html', {'post': post,
-                                                          'current_user': current_user,
-                                                          'comments': posted_comments_order,
-                                                          'num_of_comments': post_count,
-                                                          'num_of_likes':post_likes,
-                                                          'user_liked': liked})
+        liked = Like.objects.filter(post=post, user=current_user.id).exists()
+        context['current_user'] = current_user
+        context['user_liked'] = liked
+    return render(request, 'post/post_detail_view.html', context)
     
 
-
+@login_required
 def like_unlike_post(request,post_id):
     """like/unlike the specific post by the current user"""
     user = request.user
@@ -50,21 +53,17 @@ def like_unlike_post(request,post_id):
 
     if request.method == 'POST':
         data = json.loads(request.body)
-        print('request.POST:',data)
         post = Post.objects.get(id=data.get('post_id'))
         like_user_post = Like.objects.filter(user=user, post=post)
-        print('like_user_post:',like_user_post)
         try:
             if not like_user_post.exists():
                 # create a new instance
                 new_like_instance = Like.objects.create(user=user,post=post)
                 new_like_instance.save()
-                print("Created new instance")
                 response['created'] = True
             else:
                 # remove the existing
                 like_user_post.delete()
-                print("deleted the instance")
                 response['created'] = False
         except Exception as e:
             response['success'] = False
@@ -85,7 +84,6 @@ def create_new_post(request, pk):
             sub_title = form.cleaned_data['sub_title']
             description = form.cleaned_data['description']
             image_post = form.cleaned_data['image_post']
-            print(image_post)
             new_post = Post(title=title, sub_title=sub_title, description=description,
                             image_post=image_post, user=request.user)
             new_post.save()
@@ -115,7 +113,6 @@ def edit_post(request, post_id):
 @login_required
 def delete_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    print("delete method called")
     post.delete()
     return redirect('post:home')
 
@@ -123,19 +120,16 @@ def delete_post(request, post_id):
 @login_required
 def view_my_blogs(request, pk):
     my_post = Post.objects.filter(user_id=pk)
-    print(my_post)
     return render(request, 'post/my_blogs.html', {'my_blogs': my_post})
 
 
 @login_required
 def comment_post(request, post_id):
     current_post = Post.objects.get(id=post_id)
-    print(post_id)
     if request.method == 'POST':
         form = forms.CommentForm(request.POST)
         if form.is_valid():
             comment = form.cleaned_data['comment']
-            print(comment)
             new_comment = Comment(comment=comment, user_comment=request.user, post=current_post)
             new_comment.save()
             return redirect('post:post-detail-view', post_id=current_post.id)
