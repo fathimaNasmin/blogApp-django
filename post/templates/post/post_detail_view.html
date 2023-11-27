@@ -101,23 +101,12 @@
     <div class="w-75 mx-auto">
         <p class="fs-4">Comments({{ num_of_comments }})</p>
         <br><br>
-        {% if comments %}
-        {% for comment in comments %}
         <div class="all-comments"></div>
-        
-        {% endfor %}
-        <button id="show-more-btn">Show more</button>
-        {% else %}
-        <h2>No Comments yet</h2>
-        {% endif%}
+        <button id="show-more-btn" class="show-btn">Show more</button>
+        <!-- btn btn-dark w-100 mt-3 mb-4  -->
+        <p id="no-comments-msg"></p>
+
     </div>
-
-
-
-
-
-
-
 </div>
 
 
@@ -155,6 +144,7 @@
     // show more btn
     const allCommentsContainer = document.querySelector('.all-comments');
     const showMoreBtn = document.querySelector('#show-more-btn');
+    const noCommentsMsg = document.querySelector('#no-comments-msg');
     let visible = 2;
 
     // like button event
@@ -214,13 +204,17 @@
         })
         .then(data => {
             const comments = data['all_comments'];
+            if (comments.length === 0){
+                allCommentsContainer.innerHTML = 'No Comments for this posts'
+            }
+
             comments.forEach((comment) => {
                 console.log(comment.id);
 
                 allCommentsContainer.innerHTML += `
                 <div class="d-flex flex-row my-2" id="comment-section">
                     <div class="d-flex mx-auto px-2">
-                    <img src="" alt="profile-image" style="height: 40px; width: 40px; border-radius: 50%;">
+                    <img src="${comment.user_profile}" alt="profile-image" style="height: 40px; width: 40px; border-radius: 50%;">
                     </div>
                     <div class="d-flex flex-column px-2 flex-grow-1">
                         <h6>${comment.user}
@@ -234,8 +228,8 @@
             })
 
             if(data['any_comments_left']){
-                console.log('No more comments');
-                
+                noCommentsMsg.innerHTML = 'No more Comments';
+                showMoreBtn.classList.add('invisible');
             }
 
         })
@@ -245,16 +239,13 @@
         })
     } 
 
-    // display 3 comments when loaded
+    // display 2 comments when page loaded
     getCommentRequest(visible);
 
     // on click event to show more button
     showMoreBtn.addEventListener('click',()=>{
-        visible += 3;
+        visible += 2;
         getCommentRequest(visible);
-
-        
-        
     });
 
     // Show more Comments Ends

@@ -47,3 +47,21 @@ border-color: grey;
   border: 0px solid rgb(214, 212, 212);
   border-radius: 8px;
 }
+
+.invisible{
+  display: none;
+}
+
+.show-btn{
+  width: 100%;
+  border: 2px solid black;
+  border-radius: 5px;
+  background-color: inherit;
+  margin: 7px 0px;
+  padding: 7px 0px;
+  color: black
+}
+.show-btn:hover{
+  background-color: black;
+  color: white;
+}

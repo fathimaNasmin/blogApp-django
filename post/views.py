@@ -77,7 +77,7 @@ def like_unlike_post(request,post_id):
 def get_more_comments(request, post_id):
     """get more comments for a particular post"""
     upper = int(request.GET.dict()['num_of_posts'])
-    lower = upper - 3
+    lower = upper - 2
     posts = Post.objects.get(id=post_id)
     all_comments = posts.comment_set.all().order_by('-date_added')[lower:upper]
     total_comments = posts.comment_set.count()
@@ -93,7 +93,6 @@ def get_more_comments(request, post_id):
             'date': comment.date_added
         }
         all_comment_dict.append(single_comment)
-    print(all_comment_dict)
     response = {
         'success':True, 
         'post_id':post_id,
