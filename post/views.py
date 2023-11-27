@@ -28,8 +28,8 @@ def home(request):
 def post_detail_view(request, post_id):
     post = Post.objects.get(id=post_id)
     posted_comments = Comment.objects.filter(post__id=post_id)
-    posted_comments_order = posted_comments.order_by('-date_added')[:5]
-    post_count = posted_comments.count()
+    posted_comments_order = posted_comments.order_by('-date_added')[:2]
+    post_count = post.comment_set.count()
     post_likes = post.like_set.count()
     
     context = {'post': post,

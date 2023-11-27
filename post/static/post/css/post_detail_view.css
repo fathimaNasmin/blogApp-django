@@ -40,3 +40,10 @@ border-color: grey;
 .sub-title{
     color:grey;
 }
+
+#comment-section {
+  padding: 15px 10px;
+  background-color: rgb(225, 224, 224);
+  border: 0px solid rgb(214, 212, 212);
+  border-radius: 8px;
+}

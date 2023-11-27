@@ -2,7 +2,8 @@
 {% load static %}
 {% load humanize %}
 {% block style %}
-    <link rel="stylesheet" href="{% static 'post/post_detail_view.css' %}">
+    <link rel="stylesheet" href="{% static 'post/css/post_detail_view.css' %}">
+
 {% endblock %}
 
 {% block main %}
@@ -98,22 +99,26 @@
     <br><br><br>
     <!--Display Comment-->
     <div class="w-75 mx-auto">
-        <p class="fs-4">Comments({{ count_of_posts }})</p>
+        <p class="fs-4">Comments({{ num_of_comments }})</p>
         <br><br>
         {% if comments %}
         {% for comment in comments %}
-        <div class="d-flex flex-row my-2">
+        <div class="d-flex flex-row my-2" id="comment-section">
             <div class="d-flex mx-auto px-2">
                 <img src="{{ comment.user_comment.profile.profile_image.url }}" style="height: 40px; width: 40px; border-radius: 50%;">
             </div>
             <div class="d-flex flex-column px-2 flex-grow-1">
                 {% if comment.user_comment.first_name %}
-                    <h6>{{ comment.user_comment.first_name|add:comment.user_comment.last_name }}</h6>
+                    <h6>{{ comment.user_comment.first_name|capfirst}} {{ comment.user_comment.last_name|capfirst}}
+                        <span style="color:grey;font-size: 14px;font-weight:400;padding-left: 15px;">{{ comment.date_added|naturaltime }}</span>
+                    </h6>
+                    
                 {% else %}
-                    <h6>{{ comment.user_comment.username|capfirst }}</h6>
+                    <h6>{{ comment.user_comment.username|capfirst }}
+                        <span style="color:grey;font-size: 14px;font-weight:400;padding-left: 15px;">{{ comment.date_added|naturaltime }}</span>
+                    </h6>
                 {% endif %}
-                <small style="color:grey">{{ comment.date_added|naturaltime }}</small>
-                <p class="fs-6 mt-2">{{ comment.comment }}</p>
+                <p class="mt-2" style="font-weight: 400;">{{ comment.comment }}</p>
             </div>
         </div>
         {% endfor %}
