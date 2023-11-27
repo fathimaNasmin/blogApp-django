@@ -88,6 +88,7 @@ def get_more_comments(request, post_id):
         single_comment = {
             'id':comment.id,
             'user':comment.user_comment.profile.full_name,
+            'user_profile':comment.user_comment.profile.profile_image.url,
             'comment':comment.comment,
             'date': comment.date_added
         }

@@ -103,24 +103,8 @@
         <br><br>
         {% if comments %}
         {% for comment in comments %}
-        <div class="d-flex flex-row my-2" id="comment-section">
-            <div class="d-flex mx-auto px-2">
-                <img src="{{ comment.user_comment.profile.profile_image.url }}" style="height: 40px; width: 40px; border-radius: 50%;">
-            </div>
-            <div class="d-flex flex-column px-2 flex-grow-1">
-                {% if comment.user_comment.first_name %}
-                    <h6>{{ comment.user_comment.first_name|capfirst}} {{ comment.user_comment.last_name|capfirst}}
-                        <span style="color:grey;font-size: 14px;font-weight:400;padding-left: 15px;">{{ comment.date_added|naturaltime }}</span>
-                    </h6>
-                    
-                {% else %}
-                    <h6>{{ comment.user_comment.username|capfirst }}
-                        <span style="color:grey;font-size: 14px;font-weight:400;padding-left: 15px;">{{ comment.date_added|naturaltime }}</span>
-                    </h6>
-                {% endif %}
-                <p class="mt-2" style="font-weight: 400;">{{ comment.comment }}</p>
-            </div>
-        </div>
+        <div class="all-comments"></div>
+        
         {% endfor %}
         <button id="show-more-btn">Show more</button>
         {% else %}
@@ -169,8 +153,9 @@
     const postId = parseInt(likeForm.dataset.postId);
 
     // show more btn
+    const allCommentsContainer = document.querySelector('.all-comments');
     const showMoreBtn = document.querySelector('#show-more-btn');
-    let visible = 3;
+    let visible = 2;
 
     // like button event
     if (likeForm) {
@@ -232,7 +217,22 @@
             comments.forEach((comment) => {
                 console.log(comment.id);
 
+                allCommentsContainer.innerHTML += `
+                <div class="d-flex flex-row my-2" id="comment-section">
+                    <div class="d-flex mx-auto px-2">
+                    <img src="" alt="profile-image" style="height: 40px; width: 40px; border-radius: 50%;">
+                    </div>
+                    <div class="d-flex flex-column px-2 flex-grow-1">
+                        <h6>${comment.user}
+                            <span style="color:grey;font-size: 14px;font-weight:400;padding-left: 15px;">
+                                ${comment.date}
+                            </span>
+                        </h6>
+                    <p class="mt-2" style="font-weight: 400;">${comment.comment}</p>
+                </div>
+            </div>`;
             })
+
             if(data['any_comments_left']){
                 console.log('No more comments');
                 
