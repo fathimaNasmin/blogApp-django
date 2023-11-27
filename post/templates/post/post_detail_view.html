@@ -122,6 +122,7 @@
             </div>
         </div>
         {% endfor %}
+        <button id="show-more-btn">Show more</button>
         {% else %}
         <h2>No Comments yet</h2>
         {% endif%}
@@ -165,11 +166,16 @@
     const likeStatus = likeBtn.dataset.likeStatus;
     const csrftoken = document.querySelector("[name='csrfmiddlewaretoken']")
 
-    
+    const postId = parseInt(likeForm.dataset.postId);
+
+    // show more btn
+    const showMoreBtn = document.querySelector('#show-more-btn');
+    let visible = 3;
+
+    // like button event
     if (likeForm) {
         likeForm.addEventListener('submit', (event) => {
             event.preventDefault();
-            const postId = parseInt(likeForm.dataset.postId);
             console.log('post id:', postId);
 
             fetch(`/view/${postId}/like/`, {
@@ -210,7 +216,48 @@
         })
     }
     
-    
+    // Show more Comments 
+    const getCommentRequest = (visible) => {
+        fetch(`/view/${postId}/get-more-comments/?num_of_posts=${visible}`, {
+            method: 'GET'
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Something went wrong on server.`)
+            }
+            return response.json()
+        })
+        .then(data => {
+            const comments = data['all_comments'];
+            comments.forEach((comment) => {
+                console.log(comment.id);
+
+            })
+            if(data['any_comments_left']){
+                console.log('No more comments');
+                
+            }
+
+        })
+        .catch(error => {
+            console.log('error:', error);
+
+        })
+    } 
+
+    // display 3 comments when loaded
+    getCommentRequest(visible);
+
+    // on click event to show more button
+    showMoreBtn.addEventListener('click',()=>{
+        visible += 3;
+        getCommentRequest(visible);
+
+        
+        
+    });
+
+    // Show more Comments Ends
 
     function confirmDelete() {
         var result = confirm("Are you sure you want to delete this post?");
