@@ -33,7 +33,8 @@ class Like(models.Model):
     
     
 class Comment(models.Model):
-    comment = models.TextField()
+    # comment = models.TextField()
+    comment = RichTextField()
     date_added = models.DateTimeField(auto_now_add=True)
     user_comment = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)

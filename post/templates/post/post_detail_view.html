@@ -60,9 +60,10 @@
                 {% endif %}
             </form>
             {% else %}
-            <button type="submit" id="like-btn" data-like-status="not-liked" style="border: none;background-color: inherit;color:grey;cursor: default;">
-                <i class="fa-regular fa-thumbs-up fa-xl" id="like-icon"></i>
-            </button>
+            <a href="{% url 'user:login' %}?next={{request.path}}" style="border: none;background-color: inherit;color:grey;"><i class="fa-regular fa-thumbs-up fa-xl" id="like-icon"></i></a>
+            
+                
+            
             {% endif %}
             <!-- Like Unlike button ends here-->
             
@@ -137,19 +138,18 @@
 
     // get todays date UTC for dateFns formatDistanceNow
     const today = new Date();
-    const currentYear = today.getUTCFullYear();
-    const month = today.getUTCMonth() + 1;
-    const day = today.getUTCDate();
-    const hours = today.getUTCHours();
-    const minutes = today.getUTCMinutes();
-    const seconds = today.getUTCSeconds();
+    const currentYear = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    const hours = today.getHours();
+    const minutes = today.getMinutes();
+    const seconds = today.getSeconds();
     
     
     const likeForm = document.getElementById('like-unlike-form');
     const likeBtn = document.querySelector('#like-btn');
     const likeIcon = document.querySelector('#like-icon');
     const likeCount = document.querySelector('#likesCount');
-    const likeStatus = likeBtn.dataset.likeStatus;
     const csrftoken = document.querySelector("[name='csrfmiddlewaretoken']")
 
     const postId = parseInt(document.querySelector('.posts').dataset.postId);
@@ -244,7 +244,7 @@
                     <div class="d-flex flex-column px-2 flex-grow-1">
                         <h6>${comment.user}
                             <span style="color:grey;font-size: 14px;font-weight:400;padding-left: 15px;">
-                                ${postedDateFromNow}
+                                ${postedDateFromNow} ago
                             </span>
                         </h6>
                     <p class="mt-2" style="font-weight: 400;">${comment.comment}</p>

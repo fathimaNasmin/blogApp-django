@@ -26,8 +26,10 @@ def signup(request):
 
 
 def login_user(request):
+    next_url = ''
     form = forms.LoginForm()
     if request.method == "POST":
+        
         form = forms.LoginForm(request.POST or None)
         if form.is_valid():
             username = form.cleaned_data['username']
@@ -35,12 +37,16 @@ def login_user(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('post:home')
+                if next_url:
+                    return redirect(next_url)
+                return redirect("post:home")
 
             messages.error(request, "User doesn't exists")
             return redirect('user:login')
-    # else:
-    #     form = forms.LoginForm()
+    else:
+        print(request.GET)
+        next_url = request.GET.get("next", "post:home")
+        print(next_url)
 
     return render(request, 'user/login.html', {'form': form})
 
