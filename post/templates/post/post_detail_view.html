@@ -130,7 +130,20 @@
 
 <!--js script-->
 {% block script %}
-<script>
+
+
+<script type="module">
+    import * as dateFns from 'https://cdn.jsdelivr.net/npm/date-fns@2.30.0/+esm';
+
+    // get todays date UTC for dateFns formatDistanceNow
+    const today = new Date();
+    const currentYear = today.getUTCFullYear();
+    const month = today.getUTCMonth() + 1;
+    const day = today.getUTCDate();
+    const hours = today.getUTCHours();
+    const minutes = today.getUTCMinutes();
+    const seconds = today.getUTCSeconds();
+    
     
     const likeForm = document.getElementById('like-unlike-form');
     const likeBtn = document.querySelector('#like-btn');
@@ -209,8 +222,21 @@
             }
 
             comments.forEach((comment) => {
-                console.log(comment.id);
+                const postedDate = new Date(comment.date)
+                const postedYear = postedDate.getFullYear();
+                const postedmonth = postedDate.getMonth() + 1; 
+                const postedday = postedDate.getDate();
+                const postedhours = postedDate.getHours();
+                const postedminutes = postedDate.getMinutes();
+                const postedseconds = postedDate.getSeconds();
 
+                const postedDateFromNow = 
+                    dateFns.formatDistance(
+                        new Date(currentYear, month, day, hours, minutes, seconds),
+                        new Date(postedYear, postedmonth, postedday, postedhours, postedminutes, postedseconds),
+                        { addSuffix: false }
+                    );
+            
                 allCommentsContainer.innerHTML += `
                 <div class="d-flex flex-row my-2" id="comment-section">
                     <div class="d-flex mx-auto px-2">
@@ -219,7 +245,7 @@
                     <div class="d-flex flex-column px-2 flex-grow-1">
                         <h6>${comment.user}
                             <span style="color:grey;font-size: 14px;font-weight:400;padding-left: 15px;">
-                                ${comment.date}
+                                ${postedDateFromNow}
                             </span>
                         </h6>
                     <p class="mt-2" style="font-weight: 400;">${comment.comment}</p>
