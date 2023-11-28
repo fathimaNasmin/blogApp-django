@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block main %}
-<div class="">
+<div class="posts" data-post-id="{{post.id}}">
     <h1 class="text-center mx-4 mb-4">{{ post.title }}</h1>
     <p class="text-center mx-2 sub-title">{{ post.sub_title }}</p>
     <div class="text-center mt-3 d-flex flex-row justify-content-center align-items-center">
@@ -152,7 +152,7 @@
     const likeStatus = likeBtn.dataset.likeStatus;
     const csrftoken = document.querySelector("[name='csrfmiddlewaretoken']")
 
-    const postId = parseInt(likeForm.dataset.postId);
+    const postId = parseInt(document.querySelector('.posts').dataset.postId);
 
     // show more btn
     const allCommentsContainer = document.querySelector('.all-comments');
@@ -164,7 +164,6 @@
     if (likeForm) {
         likeForm.addEventListener('submit', (event) => {
             event.preventDefault();
-            console.log('post id:', postId);
 
             fetch(`/view/${postId}/like/`, {
                 method: 'POST',
