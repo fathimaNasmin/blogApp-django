@@ -26,8 +26,8 @@ hr {
 .post-content{
     font-family: "Times New Roman", Times, serif;
     margin:5% 10%;
-    font-size:1.5rem;
-    line-height: 1.4;
+    font-size:22px;
+    line-height: 1.6;
     word-spacing: 7px;
     text-align:justify
 }
