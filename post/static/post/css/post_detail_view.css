@@ -65,3 +65,12 @@ border-color: grey;
   background-color: black;
   color: white;
 }
+
+#delete-btn{
+  border: none;
+  background-color: inherit;
+  color: rgb(108, 117, 125);
+  font-size: 16px;
+  font-weight: 400;
+  font-family: Poppins, sans-serif;
+}
