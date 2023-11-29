@@ -5,6 +5,7 @@ from .models import Post, Comment, Like
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
+from urllib.error import HTTPError
 import json
 
 from django.http import JsonResponse
@@ -139,9 +140,21 @@ def edit_post(request, post_id):
 
 @login_required
 def delete_post(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
-    post.delete()
-    return redirect('post:home')
+    response = {}
+    if request.method == "POST":
+        data = json.loads(request.body)
+        try:
+            post = get_object_or_404(Post, id=data.get('post_id'))
+        except HTTPError as err:
+            print(f'A HTTPError was thrown: {err.code} {err.reason}')
+            response['error'] = str(err.code), str(err.reason)
+        except Exception as e:
+            print(f'An Exception has occured: {e}')
+            response['error'] = str(e)
+        else:
+            post.delete()
+            response['message'] = 'Post successfully deleted'
+        return JsonResponse(response, safe=False)
 
 
 @login_required
