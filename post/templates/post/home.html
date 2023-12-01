@@ -19,7 +19,9 @@
             {% for post in posts|slice:":1" %}
                 <a href="{% url 'post:post-detail-view' post.id %}">
                   <div id="first-post">
-                      <img class="first" src="{{ post.image_post.url }}" alt="">
+                    {% if post.image_post.url %}
+                    <img class="first" src="{{ post.image_post.url }}" alt="">
+                    {% endif %}
                       <div class="text-overlay">
                           <p>{% if not post.user.profile.full_name %}
                             {{ post.user.username }}
@@ -41,7 +43,10 @@
                 <div class="col-xl-4 col-md-6">
                     <a href="{% url 'post:post-detail-view' post.id %}">
                         <div class="card mx-auto border-0">
-                          <img src="{{ post.image_post.url }}" class="card-img-top" alt="..." style="object-fit:cover;width:100%;height:30vh;">
+                            {% if post.image_post.url %}
+                            <img src="{{ post.image_post.url }}" class="card-img-top" alt="..." style="object-fit:cover;width:100%;height:30vh;">
+                            {% endif %}
+                          
                           <div class="card-body">
                             <p>{% if not post.user.profile.full_name %}
                             {{ post.user.username }}

@@ -38,10 +38,12 @@
             </div>
         {% endif %}
     {% endif %}
-
+    
+    {% if post.image_post.url %}
     <div id="img-container" class="mt-2">
         <img class="text-center" src="{{ post.image_post.url }}" alt="" style="object-fit: contain;width:100%;height:auto;">
     </div>
+    {% endif %}
     <div class="post-content">
         {{ post.description|safe }}
     </div>
