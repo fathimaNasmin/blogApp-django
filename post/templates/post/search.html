@@ -27,7 +27,7 @@
                                 {{post.user.profile.full_name}}
                                 {% endif %}&nbsp;&#x2022;&nbsp;{{ post.date_posted|date:"D d M Y" }}</p>
                             <h4 class="card-text">{{ post.title }}</h4>
-                            <p class="card-text">{{ post.sub_title }}</p>
+                            <p class="card-text">{{ post.sub_title|truncatewords:10 }}</p>
                         </div>
                     </div>
                 </a>
