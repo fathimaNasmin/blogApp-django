@@ -43,6 +43,7 @@
               <a class="nav-link active" id="home" aria-current="page" href="{% url 'post:home' %}">Home</a>
             </li>
           </ul>
+          
             {% if user.is_authenticated %}
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item me-lg-3">
@@ -78,9 +79,18 @@
             </li>
           </ul>
             {% endif %}
+            
         </div>
+        
       </div>
     </nav>
+
+    <div class="d-flex justify-content-end">
+      <form class="d-flex" method="GET" action="{% url 'post:search' %}">
+        <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="search-input">
+        <button class="btn btn-dark" type="submit">Search</button>
+      </form>
+    </div>
 
     <!-- Main body   -->
     <main>

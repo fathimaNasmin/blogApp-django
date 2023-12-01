@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
 from urllib.error import HTTPError
+from django.db.models import Q
 import json
 
 from django.http import JsonResponse
@@ -25,6 +26,12 @@ def home(request):
     posts = paginator.get_page(page)
     return render(request, 'post/home.html', {'posts': posts})
 
+
+def search(request):
+    """search for a post with a keyword"""
+    q = request.GET.get('search-input')
+    result = Post.objects.filter(Q(title__icontains=q) or Q(sub_title__icontains=q) or Q(description__icontains=q))
+    return render(request, 'post/search.html',{'search_result':result})
 
 def post_detail_view(request, post_id):
     post = Post.objects.get(id=post_id)
