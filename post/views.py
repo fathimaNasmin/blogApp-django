@@ -30,9 +30,13 @@ def home(request):
 
 def search(request):
     """search for a post with a keyword"""
+    context = {}
     q = request.GET.get('search-input')
-    result = Post.objects.filter(Q(title__icontains=q) or Q(sub_title__icontains=q) or Q(description__icontains=q))
-    return render(request, 'post/search.html',{'search_result':result})
+    if(q != ''):
+        result = Post.objects.filter(Q(title__icontains=q) or Q(sub_title__icontains=q) or Q(
+            description__icontains=q))
+        context = {'search_result': result}
+    return render(request, 'post/search.html',context)
 
 
 def category_detail_view(request, category_id):
