@@ -6,6 +6,17 @@ from ckeditor.fields import RichTextField
 
 
 # Create your models here.
+
+class Category(models.Model):
+    """Model for post category"""
+    name = models.CharField(max_length=20)
+    
+    class Meta:
+        verbose_name_plural = "Categories"
+        
+    def __str__(self):
+        return f"{self.name} Category"
+    
 class Post(models.Model):
     title = models.CharField(max_length=250)
     sub_title = models.CharField(max_length=300)
@@ -13,6 +24,8 @@ class Post(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     image_post = models.ImageField(upload_to='post_images', null=True, blank=True)# default='post_default.jpg',
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.user.first_name, self.title} Post"
@@ -33,7 +46,6 @@ class Like(models.Model):
     
     
 class Comment(models.Model):
-    # comment = models.TextField()
     comment = RichTextField()
     date_added = models.DateTimeField(auto_now_add=True)
     user_comment = models.ForeignKey(User, on_delete=models.CASCADE)
