@@ -37,7 +37,6 @@ def search(request):
 
 def category_detail_view(request, category_id):
     category = Category.objects.get(id=category_id)
-    print(category)
     context = {
         'category': category
     }
