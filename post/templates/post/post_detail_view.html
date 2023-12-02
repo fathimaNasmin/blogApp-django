@@ -257,7 +257,8 @@
         .then(data => {
             const comments = data['all_comments'];
             if (comments.length === 0){
-                allCommentsContainer.innerHTML = 'No Comments for this posts'
+                allCommentsContainer.innerHTML = 'No Comments for this posts';
+                showMoreBtn.classList.add('invisible');
             }
 
             comments.forEach((comment) => {
