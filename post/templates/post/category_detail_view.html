@@ -1,0 +1,85 @@
+{% extends 'post/base.html' %}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'post/css/home.css' %}">
+{% endblock %}
+
+{% block main %}
+<div>
+    <h3 class="text-center">{{category.name|capfirst}}</h3>
+    {% if not category.post_set.all %}
+    <h3>No posts in this category</h3>
+    {% else %}
+    <div id="second-row">
+        <div class="row gy-4">
+            {% for post in category.post_set.all %}
+            <div class="col-xl-4 col-md-6">
+                <a href="{% url 'post:post-detail-view' post.id %}">
+                    <div class="card mx-auto border-0">
+                        {% if post.image_post.url %}
+                        <img src="{{ post.image_post.url }}" class="card-img-top" alt="..."
+                            style="object-fit:cover;width:100%;height:30vh;">
+                        {% endif %}
+
+                        <div class="card-body">
+                            <p>{% if not post.user.profile.full_name %}
+                                {{ post.user.username }}
+                                {% else %}
+                                {{post.user.profile.full_name}}
+                                {% endif %}&nbsp;&#x2022;&nbsp;{{ post.date_posted|date:"D d M Y" }}</p>
+                            <h4 class="card-text">{{ post.title }}</h4>
+                            <p class="card-text">{{ post.sub_title|truncatewords:10 }}</p>
+
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor%}
+
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+<!--    Pagination  -->
+<!--    {{posts}}<br>-->
+<!--has previous: {{ posts.has_previous}}<br>-->
+<!--has next : {{ posts.has_next}}<br>-->
+<!--current page :{{ posts.number }}<br>-->
+<!--number of page :{{ posts.paginator.num_pages }}-->
+{% if posts %}
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        {% if posts.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a></li>
+        {% endif %}
+
+        {% for num in posts.paginator.page_range %}
+        {% if posts.number == num %}
+        <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+        {% elif num > posts.number|add:"-3" and num < posts.number|add:"3" %} <li class="page-item"><a class="page-link"
+                href="?page={{ num }}">{{ num }}</a></li>
+            {% endif%}
+            {% endfor %}
+
+            {% if posts.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">Next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ posts.paginator.num_pages }}">Last</a></li>
+            {% endif %}
+
+
+    </ul>
+</nav>
+{% endif %}
+
+
+
+
+{% endblock %}
+
+<!--footer file-->
+{% block footer %}
+{% include 'post/footer.html' %}
+{% endblock %}

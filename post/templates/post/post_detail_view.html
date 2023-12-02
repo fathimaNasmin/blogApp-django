@@ -8,6 +8,13 @@
 
 {% block main %}
 <div class="posts" data-post-id="{{post.id}}">
+    <div style="background-color: rgb(220, 220, 221);
+                display: inline-block;
+                padding: 2px 10px;
+                border: none;
+                border-radius: 30px;
+                font-size: 14px;
+    ">{{post.category.name}}</div>
     <h1 class="text-center mx-4 mb-4">{{ post.title }}</h1>
     <p class="text-center mx-2 sub-title">{{ post.sub_title }}</p>
     <div class="text-center mt-3 d-flex flex-row justify-content-center align-items-center">

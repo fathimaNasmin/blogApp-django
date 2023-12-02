@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from . import forms
-from .models import Post, Comment, Like
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
@@ -12,12 +11,14 @@ import json
 from django.http import JsonResponse
 
 from user.models import User,Profile
+from .models import Post, Comment, Like, Category
 
 
 
 # Create your views here.
 def home(request):
     all_post = Post.objects.all().order_by('-date_posted')
+    print(all_post[0].category.name)
     # first_post = all_post[:1]
     # rest_of_posts = all_post[1:]
     # Setup paginator
@@ -32,6 +33,15 @@ def search(request):
     q = request.GET.get('search-input')
     result = Post.objects.filter(Q(title__icontains=q) or Q(sub_title__icontains=q) or Q(description__icontains=q))
     return render(request, 'post/search.html',{'search_result':result})
+
+
+def category_detail_view(request, category_id):
+    category = Category.objects.get(id=category_id)
+    print(category)
+    context = {
+        'category': category
+    }
+    return render(request, 'post/category_detail_view.html',context)
 
 def post_detail_view(request, post_id):
     post = Post.objects.get(id=post_id)

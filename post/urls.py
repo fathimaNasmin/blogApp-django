@@ -5,6 +5,7 @@ app_name = 'post'
 urlpatterns = [
     path('', post_view.home, name='home'),
     path('search/', post_view.search, name='search'),
+    path('category/<int:category_id>/', post_view.category_detail_view, name='category-detail-view'),
     path('view/<int:post_id>/', post_view.post_detail_view, name='post-detail-view'),
     path('comment/<int:post_id>/', post_view.comment_post, name='comment-post'),
     path('view/<int:post_id>/get-more-comments/',
