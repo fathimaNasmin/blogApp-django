@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     
     'user',
     'post',
+    'newsletter',
     
     'crispy_forms',
     'crispy_bootstrap5',

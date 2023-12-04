@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('post.urls')),
     path('user/', include('user.urls')),
+    path('subscriber/', include('newsletter.urls')),
     path('accounts/', include('allauth.urls')),#allauth url
     
     # Password reset
