@@ -4,5 +4,5 @@ from newsletter import views as newsletter_view
 app_name = 'newsletter'
 
 urlpatterns = [
-    path('', newsletter_view.subscribe, name='home'),
+    path('', newsletter_view.subscribe, name='subscribe'),
 ]
