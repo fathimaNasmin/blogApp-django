@@ -1,12 +1,62 @@
 {% load static %}
+{% load crispy_forms_tags %}
 <link rel="stylesheet" href="{% static 'post/css/newsletter.css' %}">
 
 <div class="border text-center my-5 py-5 w-75 mx-auto news-content">
     <h2 class="my-3">Still thinking about it?</h2>
     <p class="mb-4">Signup for our newsletter and be updated.</p>
-    <div class="d-flex justify-content-center w-50 my-3 mx-auto">
-        <input type="email" class="form-control mx-2" id="" placeholder="Email Address">
-        <button class="btn btn-dark mx-2">Subscribe</button>
-    </div>
+    
+    <form action="" id="subscribe-form" class="form">
+        <div class="d-flex justify-content-center w-50 my-3 mx-auto form-div">
+            <input type="email" name="email" class="form-control mx-2" id="email-input" placeholder="Email Address">
+            <button class="btn btn-dark mx-2" type="submit">Subscribe</button>
+        </div>
+        <div class="error-msg"></div>
+    </form>
+    
+    
 
 </div>
+
+{% block script %}
+
+    <script>
+        const subscribeForm = document.querySelector('#subscribe-form')
+        const emailInput = document.querySelector('#email-input')
+        const errMsg = document.querySelector('.error-msg')
+        let is_validate;
+
+        function ValidateEmail(input) {
+            var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+            if (input.value.match(validRegex)) {
+                return true;
+            } else {
+                return false;
+
+            }
+
+        }
+
+        emailInput.addEventListener('focus', () => {
+            // Clear any previous error messages
+            errMsg.textContent = '';
+        });
+
+        emailInput.addEventListener('blur', () => {
+            // Validate the input when the user leaves the field
+            is_validate = ValidateEmail(emailInput);
+            console.log(is_validate);
+            if (is_validate) {
+                    errMsg.textContent = '';
+                }
+                else{
+                    errMsg.textContent = "Enter valid email address";
+                }
+
+        });
+
+
+        
+    </script>
+
+{% endblock %}

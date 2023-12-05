@@ -13,6 +13,8 @@ from django.http import JsonResponse
 from user.models import User,Profile
 from .models import Post, Comment, Like, Category
 
+from newsletter.forms import SubscribeForm
+
 
 
 # Create your views here.
@@ -52,11 +54,13 @@ def post_detail_view(request, post_id):
     posted_comments_order = posted_comments.order_by('-date_added')[:2]
     post_count = post.comment_set.count()
     post_likes = post.like_set.count()
+    subscriber_form = SubscribeForm()
     
     context = {'post': post,
                'comments': posted_comments_order,
                'num_of_comments': post_count,
-               'num_of_likes': post_likes
+               'num_of_likes': post_likes,
+               'subscriber_form': subscriber_form
                }
     if request.user:
         current_user = request.user
