@@ -80,7 +80,7 @@
                         if(!data['exists']){
                             // message for new user
                             newsletterContainer.innerHTML = `
-                                <img src="{% static 'newsletter/images/icons8-success-200.png' %}" alt="">
+                                <img src="{% static 'newsletter/images/icons8-success-100.png' %}" alt="">
                                 <h2 class="my-3">Thank You for Subscribing!</h2>
                                 <p class="mb-4">You have successfully subscribed to the list.
                                     Now you'll get mail when new blogs are posted.</p>
@@ -98,7 +98,7 @@
                     } else {
                         // server error message
                         newsletterContainer.innerHTML = `
-                            <img src="{% static 'newsletter/images/warning (1).png' %}" alt="">
+                            <img src="{% static 'newsletter/images/warning (1).png' %}" alt="" width="180">
                                 <h2 class="my-3">Server Error</h2>
                                 <p class="mb-4">Something went wrong.Try again later</p>
                                 `;
