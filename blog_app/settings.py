@@ -227,3 +227,8 @@ LOGOUT_REDIRECT_URL = '/'
 
 # To directly redirect to the google login page
 SOCIALACCOUNT_LOGIN_ON_GET = True 
+
+
+# Celery settings
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"

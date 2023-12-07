@@ -9,6 +9,7 @@
     
     <form action="" id="subscribe-form" class="form" novalidate>
         <div class="d-flex justify-content-center w-50 my-3 mx-auto form-div">
+            {% csrf_token %}
             <input type="email" name="email" class="form-control mx-2" id="email-input" placeholder="Email Address">
             <button class="btn btn-dark mx-2" type="submit">Subscribe</button>
         </div>

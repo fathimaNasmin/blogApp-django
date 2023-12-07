@@ -4,6 +4,8 @@ import json
 
 from .models import Subscriber
 
+from .tasks import send_subscription_email_task
+
 # Create your views here.
 
 def subscribe(request):
@@ -14,6 +16,7 @@ def subscribe(request):
         if(not subscriber_exists):
             Subscriber.objects.create(email=data['email'])
             response['exists'] = False
+            send_subscription_email_task.delay(data['email'])
         else:
             response['exists'] = True
     except Exception as e:
