@@ -132,8 +132,14 @@ def create_new_post(request, pk):
             sub_title = form.cleaned_data['sub_title']
             description = form.cleaned_data['description']
             image_post = form.cleaned_data['image_post']
-            new_post = Post(title=title, sub_title=sub_title, description=description,
-                            image_post=image_post, user=request.user)
+            category = form.cleaned_data['category']
+            print(category)
+            new_post = Post(title=title, 
+                            sub_title=sub_title, 
+                            description=description,
+                            image_post=image_post, 
+                            user=request.user,
+                            category=category)
             new_post.save()
             return redirect('post:home')
     else:

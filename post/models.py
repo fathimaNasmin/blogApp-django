@@ -22,7 +22,7 @@ class Post(models.Model):
     sub_title = models.CharField(max_length=300)
     description = RichTextField()
     date_posted = models.DateTimeField(default=timezone.now)
-    image_post = models.ImageField(upload_to='post_images', null=True, blank=True)# default='post_default.jpg',
+    image_post = models.ImageField(default='post_default.jpg',upload_to='post_images/', null=True, blank=True)# default='post_default.jpg',
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE)

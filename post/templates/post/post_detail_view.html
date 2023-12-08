@@ -46,10 +46,16 @@
         {% endif %}
     {% endif %}
     
-    {% if post.image_post.url %}
+    {% if post.image_post %}
     <div id="img-container" class="mt-2">
         <img class="text-center" src="{{ post.image_post.url }}" alt="" style="object-fit: contain;width:100%;height:auto;">
     </div>
+    {% else %}
+    <div>
+        <img src="../../../media/post_default.jpg" class="card-img-top" alt="..."
+            style="object-fit:cover;width:100%;height:30vh;">
+    </div>
+   
     {% endif %}
     <div class="post-content">
         {{ post.description|safe }}

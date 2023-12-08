@@ -18,8 +18,11 @@
             <div class="col-xl-4 col-md-6">
                 <a href="{% url 'post:post-detail-view' post.id %}">
                     <div class="card mx-auto border-0">
-                        {% if post.image_post.url %}
+                        {% if post.image_post %}
                             <img src="{{ post.image_post.url }}" class="card-img-top" alt="..." style="object-fit:cover;width:100%;height:30vh;">
+                            {% else %}
+                            <img src="../../../media/post_default.jpg" class="card-img-top" alt="..."
+                                style="object-fit:cover;width:100%;height:30vh;">
                         {% endif %}
                         
                         <div class="card-body">
