@@ -3,6 +3,7 @@ from .models import Post, Comment
 
 
 class CreatePost(forms.ModelForm):
+    field_order = ['category']
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['image_post'].label = "Post Image"
