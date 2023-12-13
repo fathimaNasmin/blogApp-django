@@ -17,10 +17,7 @@ from .models import Post, Comment, Like, Category
 
 # Create your views here.
 def home(request):
-    all_post = Post.objects.all().order_by('-date_posted')
-    print(all_post[0].category.name)
-    # first_post = all_post[:1]
-    # rest_of_posts = all_post[1:]
+    all_post = Post.objects.select_related('user').order_by('-date_posted')
     # Setup paginator
     paginator = Paginator(all_post, 7)
     page = request.GET.get('page')
@@ -48,21 +45,15 @@ def category_detail_view(request, category_id):
 
 def post_detail_view(request, post_id):
     post = Post.objects.get(id=post_id)
-    posted_comments = Comment.objects.filter(post__id=post_id)
-    posted_comments_order = posted_comments.order_by('-date_added')[:2]
-    post_count = post.comment_set.count()
-    post_likes = post.like_set.count()
     
-    context = {'post': post,
-               'comments': posted_comments_order,
-               'num_of_comments': post_count,
-               'num_of_likes': post_likes
-               }
+    context = {
+            'post': post
+            }
     if request.user:
         current_user = request.user
-        liked = Like.objects.filter(post=post, user=current_user.id).exists()
+        post_liked = post.like_set.filter(user=current_user.id).exists()
         context['current_user'] = current_user
-        context['user_liked'] = liked
+        context['user_liked'] = post_liked
     return render(request, 'post/post_detail_view.html', context)
     
 
@@ -75,7 +66,7 @@ def like_unlike_post(request,post_id):
     if request.method == 'POST':
         data = json.loads(request.body)
         post = Post.objects.get(id=data.get('post_id'))
-        like_user_post = Like.objects.filter(user=user, post=post)
+        like_user_post = post.like_set.filter(user=user, post=post)
         try:
             if not like_user_post.exists():
                 # create a new instance
