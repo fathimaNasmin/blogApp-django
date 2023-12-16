@@ -26,6 +26,8 @@ urlpatterns = [
     path('subscriber/', include('newsletter.urls')),
     path('accounts/', include('allauth.urls')),#allauth url
     
+    path("__debug__/", include("debug_toolbar.urls")),
+    
     # Password reset
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='user/password_reset/password_reset.html'),
          name='password_reset'),
