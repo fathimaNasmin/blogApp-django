@@ -13,10 +13,18 @@ from django.http import JsonResponse
 from user.models import User,Profile
 from .models import Post, Comment, Like, Category
 
+from django.conf import settings
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
+from django.views.decorators.cache import cache_page
+
+CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
+
 
 
 # Create your views here.
+@cache_page(CACHE_TTL)
 def home(request):
+    """Home page of the blog app"""
     all_post = Post.objects.select_related('user').order_by('-date_posted')
     # Setup paginator
     paginator = Paginator(all_post, 7)
@@ -36,14 +44,19 @@ def search(request):
     return render(request, 'post/search.html',context)
 
 
+@cache_page(CACHE_TTL)
 def category_detail_view(request, category_id):
+    """view to list all the blogs in specified category"""
     category = Category.objects.get(id=category_id)
     context = {
         'category': category
     }
     return render(request, 'post/category_detail_view.html',context)
 
+
+@cache_page(CACHE_TTL)
 def post_detail_view(request, post_id):
+    """view for each post detail post"""
     post = Post.objects.get(id=post_id)
     
     context = {
@@ -116,6 +129,7 @@ def get_more_comments(request, post_id):
 
 @login_required
 def create_new_post(request, pk):
+    """create new post for the currently logged in user"""
     if request.method == 'POST':
         form = forms.CreatePost(request.POST, request.FILES)
         if form.is_valid():
@@ -140,6 +154,7 @@ def create_new_post(request, pk):
 
 @login_required
 def edit_post(request, post_id):
+    """edit the post"""
     post = get_object_or_404(Post, id=post_id)
     if request.user != post.user:
         messages.error(request, 'You do not have permission to edit this post.')
@@ -157,6 +172,7 @@ def edit_post(request, post_id):
 
 @login_required
 def delete_post(request, post_id):
+    """delete the post"""
     response = {}
     if request.method == "POST":
         data = json.loads(request.body)
@@ -175,13 +191,16 @@ def delete_post(request, post_id):
 
 
 @login_required
+@cache_page(CACHE_TTL)
 def view_my_blogs(request, pk):
+    """view for the logined user blogs"""
     my_post = Post.objects.filter(user_id=pk)
     return render(request, 'post/my_blogs.html', {'my_blogs': my_post})
 
 
 @login_required
 def comment_post(request, post_id):
+    """user POST request to comment on a blog"""
     current_post = Post.objects.get(id=post_id)
     if request.method == 'POST':
         form = forms.CommentForm(request.POST)

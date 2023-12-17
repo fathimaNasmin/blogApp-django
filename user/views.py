@@ -15,6 +15,7 @@ from . import forms
 from user.signals import user_profile_updated
 
 
+@cache_page(CACHE_TTL)
 def signup(request):
     form = forms.SignUpForm(request.POST or None)
     if form.is_valid():
@@ -25,6 +26,7 @@ def signup(request):
     return render(request, 'user/signup.html', {'form': form})
 
 
+@cache_page(CACHE_TTL)
 def login_user(request):
     next_url = ''
     form = forms.LoginForm()
@@ -56,6 +58,7 @@ def logout_user(request):
 
 
 @login_required
+@cache_page(CACHE_TTL)
 def my_profile(request, pk):
     response = {}
     user = User.objects.get(id=pk)
