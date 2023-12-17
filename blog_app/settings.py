@@ -58,6 +58,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Add the allauth account middleware:
     "allauth.account.middleware.AccountMiddleware",
+    # cache middleware for per-site cache
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'blog_app.urls'
@@ -216,6 +220,12 @@ CACHES = {
         "KEY_PREFIX": "blog_app"
     }
 }
+
+
+CACHE_MIDDLEWARE_ALIAS = ' '  # cache alias
+CACHE_MIDDLEWARE_SECONDS = 900  # number of seconds each page should be cached.
+CACHE_MIDDLEWARE_KEY_PREFIX = ''  # name of site if multiple sites are used
+
 
 # Cache time to live is 15 minutes.
 CACHE_TTL = 60 * 15
