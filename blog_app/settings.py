@@ -222,7 +222,7 @@ CACHES = {
 }
 
 
-CACHE_MIDDLEWARE_ALIAS = ' '  # cache alias
+CACHE_MIDDLEWARE_ALIAS = 'default'  # cache alias
 CACHE_MIDDLEWARE_SECONDS = 900  # number of seconds each page should be cached.
 CACHE_MIDDLEWARE_KEY_PREFIX = ''  # name of site if multiple sites are used
 

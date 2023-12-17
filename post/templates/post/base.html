@@ -1,3 +1,5 @@
+{% load cache %}
+{% cache 900 base_html %}
 <!doctype html>
 {% load static %}
 <html lang="en">
@@ -163,3 +165,4 @@
     {% block script %} {% endblock %}
   </body>
 </html>
+{% endcache %}
