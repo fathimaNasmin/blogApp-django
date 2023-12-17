@@ -44,9 +44,7 @@ def login_user(request):
             messages.error(request, "User doesn't exists")
             return redirect('user:login')
     else:
-        print(request.GET)
         next_url = request.GET.get("next", "post:home")
-        print(next_url)
 
     return render(request, 'user/login.html', {'form': form})
 

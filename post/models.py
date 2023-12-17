@@ -15,7 +15,7 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
         
     def __str__(self):
-        return f"{self.name} Category"
+        return f"{self.name}"
     
 class Post(models.Model):
     title = models.CharField(max_length=250)
