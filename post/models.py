@@ -28,8 +28,10 @@ class Post(models.Model):
         Category, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.user.first_name, self.title} Post"
-
+        if self.user.first_name:
+            return f"{self.user.first_name, self.title} Post"
+        else:
+            return f"{self.user.username, self.title} Post"
 
 class Like(models.Model):
     """Model to store the likes for a post"""

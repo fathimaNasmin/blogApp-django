@@ -66,7 +66,7 @@ class LoginForm(forms.Form):
 
 
 class UserUpdateForm(forms.ModelForm):
-    email = forms.CharField(disabled=True)
+    email = forms.CharField(disabled=True, required=False)
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email')

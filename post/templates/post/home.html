@@ -12,7 +12,7 @@
       </center>
     </div>
     <div>
-        {% if not posts %}
+        {% if posts == None %}
         <h3>No posts</h3>
         {% else %}
 
@@ -25,11 +25,15 @@
                     <img class="first" src="../../../media/post_default.jpg" alt="">
                     {% endif %}
                       <div class="text-overlay">
-                          <p>{% if not post.user.profile.full_name %}
-                            {{ post.user.username }}
+                          <p>
+                            {% if post.user.profile.full_name %}
+                              {{ post.user.profile.full_name }}
                             {% else %}
-                            {{post.user.profile.full_name}}
-                          {% endif %}&nbsp;&#x2022;&nbsp;{{ post.date_posted|date:"D d M Y" }}</p>
+                              {{ post.user.username }}
+                            
+                            {% endif %}
+                         &nbsp;&#x2022;&nbsp;{{ post.date_posted|date:"D d M Y" }}
+                        </p>
                           <h2>{{ post.title }}</h2>
                           <p>{{ post.sub_title|truncatewords:5 }}</p>
                       </div>
